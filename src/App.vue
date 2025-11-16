@@ -24,7 +24,7 @@ async function greet() {
         <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
       </a>
       <a href="https://vuejs.org/" target="_blank">
-        <vueSvg />
+        <vueSvg class="" />
       </a>
     </div>
     <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
@@ -64,12 +64,7 @@ async function greet() {
 }
 
 .container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  @apply flex flex-col justify-center items-center pt-[30vh];
 }
 
 .logo {
