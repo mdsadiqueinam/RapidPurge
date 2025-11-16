@@ -1,7 +1,8 @@
 mod commands;
 mod utils;
 
-use commands::flash_clean;
+use commands::flash_clean::iterate_roots;
+use commands::system_info::{get_system_info, open_access_panel};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -13,7 +14,12 @@ fn greet(name: &str) -> String {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            iterate_roots,
+            get_system_info,
+            open_access_panel
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

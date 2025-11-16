@@ -24,6 +24,7 @@ impl Dir {
     }
 }
 
+#[tauri::command]
 pub async fn iterate_roots() {
     for root in get_roots() {
         for entry in WalkDir::new(&root).into_iter().filter_map(|e| e.ok())

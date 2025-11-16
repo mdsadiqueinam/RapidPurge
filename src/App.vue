@@ -8,7 +8,12 @@ const name = ref("");
 
 async function greet() {
   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  greetMsg.value = await invoke("greet", { name: name.value });
+  // greetMsg.value = await invoke("greet", { name: name.value });
+  greetMsg.value = await invoke("get_system_info");
+}
+
+async function openAccessPanel() {
+  await invoke("open_access_panel");
 }
 </script>
 
@@ -32,6 +37,7 @@ async function greet() {
     <form class="row" @submit.prevent="greet">
       <input id="greet-input" v-model="name" placeholder="Enter a name..." />
       <button type="submit">Greet</button>
+      <button type="button" @click="openAccessPanel">Open Access Panel</button>
     </form>
     <p>{{ greetMsg }}</p>
   </main>
