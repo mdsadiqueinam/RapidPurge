@@ -10,15 +10,25 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@tauri-apps/api": "^2",
+    "@babel/eslint-parser": "^7.28.5",
+    "@eslint/js": "^9.39.1",
+    "@intlify/eslint-plugin-vue-i18n": "^4.1.0",
+    "@tauri-apps/api": "latest",
     "@tauri-apps/plugin-opener": "^2",
+    "@unhead/vue": "^2.0.19",
+    "@vue/eslint-config-prettier": "^10.2.0",
     "@vueuse/core": "^14.0.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-oxlint": "^1.28.0",
+    "eslint-plugin-vue": "^10.5.1",
+    "globals": "^16.5.0",
     "unplugin-auto-import": "^20.2.0",
     "unplugin-vue-components": "^30.0.0",
     "unplugin-vue-router": "^0.17.0",
     "uuid": "^13.0.0",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.13",
+    "vue-i18n": "^11.1.12",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {

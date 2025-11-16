@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { invoke } from "@tauri-apps/api/core";
+import vueSvg from "@svgs/vue.svg";
 
 const greetMsg = ref("");
 const name = ref("");
@@ -23,7 +24,7 @@ async function greet() {
         <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
       </a>
       <a href="https://vuejs.org/" target="_blank">
-        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+        <vueSvg />
       </a>
     </div>
     <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
@@ -44,7 +45,6 @@ async function greet() {
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #249b73);
 }
-
 </style>
 <style>
 :root {
@@ -156,5 +156,4 @@ button {
     background-color: #0f0f0f69;
   }
 }
-
 </style>

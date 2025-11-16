@@ -1,0 +1,25 @@
+{
+  "app": {
+    "title": "RapidPurge",
+    "description": "Utilitário de limpeza de arquivos rápido e eficiente"
+  },
+  "navigation": {
+    "home": "Início",
+    "settings": "Configurações",
+    "about": "Sobre"
+  },
+  "actions": {
+    "scan": "Verificar",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "close": "Fechar"
+  },
+  "messages": {
+    "welcome": "Bem-vindo ao RapidPurge",
+    "loading": "Carregando...",
+    "success": "Sucesso",
+    "error": "Erro",
+    "noData": "Nenhum dado disponível"
+  }
+}

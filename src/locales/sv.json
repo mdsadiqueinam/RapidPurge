@@ -1,0 +1,25 @@
+{
+  "app": {
+    "title": "RapidPurge",
+    "description": "Snabb och effektiv filrenseringsverktyg"
+  },
+  "navigation": {
+    "home": "Hem",
+    "settings": "Inställningar",
+    "about": "Om"
+  },
+  "actions": {
+    "scan": "Skanna",
+    "delete": "Ta bort",
+    "cancel": "Avbryt",
+    "save": "Spara",
+    "close": "Stäng"
+  },
+  "messages": {
+    "welcome": "Välkommen till RapidPurge",
+    "loading": "Laddar...",
+    "success": "Lyckades",
+    "error": "Fel",
+    "noData": "Ingen data tillgänglig"
+  }
+}

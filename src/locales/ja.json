@@ -1,0 +1,25 @@
+{
+  "app": {
+    "title": "RapidPurge",
+    "description": "高速で効率的なファイルクリーンアップツール"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "settings": "設定",
+    "about": "について"
+  },
+  "actions": {
+    "scan": "スキャン",
+    "delete": "削除",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "close": "閉じる"
+  },
+  "messages": {
+    "welcome": "RapidPurgeへようこそ",
+    "loading": "読み込み中...",
+    "success": "成功",
+    "error": "エラー",
+    "noData": "利用可能なデータはありません"
+  }
+}
