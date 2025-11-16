@@ -1,0 +1,13 @@
+@import './base.css';
+
+button {
+  @apply enabled:cursor-pointer;
+}
+
+select {
+  @apply cursor-pointer rounded-lg border border-divider bg-sidebar text-sm text-sidebar-text transition-[border,background-color,color,opacity,box-shadow] duration-300 hover:border-divider-hover hover:bg-sidebar-unselected-hover hover:text-sidebar-text-hover disabled:cursor-not-allowed disabled:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 appearance-none px-3 py-2;
+}
+
+option {
+  @apply bg-sidebar hover:bg-sidebar-text-hover my-1;
+}

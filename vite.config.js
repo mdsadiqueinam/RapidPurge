@@ -8,6 +8,7 @@ import { HeadlessUiResolver } from "unplugin-vue-components/resolvers";
 import { VueRouterAutoImports } from "unplugin-vue-router";
 import svgLoader from "vite-svg-loader";
 import { v4 as uuidv4 } from "uuid";
+import tailwindcss from "@tailwindcss/vite";
 
 const host = process.env.TAURI_DEV_HOST;
 
@@ -16,6 +17,7 @@ export default defineConfig(async () => ({
   plugins: [
     VueRouter({ importMode: "sync", dts: "./typed-router.d.ts" }),
     vue(),
+    tailwindcss(),
     Components({
       resolvers: [HeadlessUiResolver()],
       dirs: ["resources/js/shared/components/**", "src/components/**"],
