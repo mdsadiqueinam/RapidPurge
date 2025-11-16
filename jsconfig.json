@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@root/*": ["./src/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@components/*": ["./src/components/*"],
+      "@composables/*": ["./src/composables/*"],
+      "@svgs/*": ["./src/svgs/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
