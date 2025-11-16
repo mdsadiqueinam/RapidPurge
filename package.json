@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
     "@eslint/js": "^9.39.1",
     "@intlify/eslint-plugin-vue-i18n": "^4.1.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
