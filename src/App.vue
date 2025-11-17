@@ -13,7 +13,8 @@ async function greet() {
 }
 
 async function openAccessPanel() {
-  await invoke("open_access_panel");
+  // await invoke("open_access_panel");
+  await invoke("iterate_roots");
 }
 </script>
 

@@ -1,7 +1,7 @@
 mod commands;
 mod utils;
 
-use commands::flash_clean::iterate_roots;
+use commands::path::iterate_roots;
 use commands::system_info::{get_system_info, open_access_panel};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
