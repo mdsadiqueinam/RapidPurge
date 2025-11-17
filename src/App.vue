@@ -1,20 +1,30 @@
 <script setup>
 import { ref } from "vue";
-import { invoke } from "@tauri-apps/api/core";
+import { invoke, Channel } from "@tauri-apps/api/core";
 import vueSvg from "@svgs/vue.svg";
 
-const greetMsg = ref("");
+const data = ref({});
+const greetMsg = computed(() => data.value.lastPathStr);
+const size = computed(() => formatBytes(data.value.junkFound));
 const name = ref("");
+const event = new Channel();
+
+event.onmessage = (msg) => {
+  data.value = msg.data;
+  // console.log("Received message from Rust:", msg);
+};
 
 async function greet() {
   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  // greetMsg.value = await invoke("greet", { name: name.value });
-  greetMsg.value = await invoke("get_system_info");
+  invoke("iterate_roots", { event });
 }
 
-async function openAccessPanel() {
-  // await invoke("open_access_panel");
-  await invoke("iterate_roots");
+function formatBytes(bytes) {
+  if (!bytes) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }
 </script>
 
@@ -38,9 +48,9 @@ async function openAccessPanel() {
     <form class="row" @submit.prevent="greet">
       <input id="greet-input" v-model="name" placeholder="Enter a name..." />
       <button type="submit">Greet</button>
-      <button type="button" @click="openAccessPanel">Open Access Panel</button>
     </form>
     <p>{{ greetMsg }}</p>
+    <p>{{ size }}</p>
   </main>
 </template>
 
