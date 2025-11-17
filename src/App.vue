@@ -6,11 +6,16 @@ import vueSvg from "@svgs/vue.svg";
 const data = ref({});
 const greetMsg = computed(() => data.value.lastPathStr);
 const size = computed(() => formatBytes(data.value.junkFound));
+const pathInfos = ref([]);
 const name = ref("");
 const event = new Channel();
 
 event.onmessage = (msg) => {
-  data.value = msg.data;
+  if (msg.event === "progress") {
+    data.value = msg.data;
+  } else if (msg.event === "finished") {
+    pathInfos.value = msg.data.rootNodes;
+  }
   // console.log("Received message from Rust:", msg);
 };
 
@@ -51,6 +56,8 @@ function formatBytes(bytes) {
     </form>
     <p>{{ greetMsg }}</p>
     <p>{{ size }}</p>
+
+    <pre>{{ pathInfos.length }}</pre>
   </main>
 </template>
 

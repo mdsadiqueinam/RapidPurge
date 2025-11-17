@@ -1,12 +1,11 @@
 use crate::utils::{file_allocated_bytes_and_id, get_roots, is_excluded, is_hidden, FileId};
 use serde::Serialize;
-use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
-use std::rc::Rc;
+use std::sync::{Arc, Mutex};
 use tauri::{ipc::Channel, AppHandle};
 use walkdir::{DirEntry, WalkDir};
 
-type Node = Rc<RefCell<PathInfo>>;
+type Node = Arc<Mutex<PathInfo>>;
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase", tag = "event")]
@@ -19,7 +18,7 @@ pub struct PathInfo {
 
 impl PathInfo {
     pub fn new(path: String, size: u128, is_file: bool) -> Node {
-        Rc::new(RefCell::new(Self {
+        Arc::new(Mutex::new(Self {
             path,
             size,
             children: Vec::new(),
@@ -46,6 +45,7 @@ pub enum ScanEvent {
     },
     Finished {
         junk_found: u64,
+        root_nodes: Vec<Node>,
     },
 }
 
@@ -101,7 +101,7 @@ where
                 let parent_path_str = parent_path.to_string_lossy().to_string();
                 if let Some(parent_node) = path_map.get_mut(&parent_path_str) {
                     // borrow the parent's inner PathInfo mutably and add a clone of node
-                    parent_node.borrow_mut().add_child(node.clone());
+                    parent_node.lock().unwrap().add_child(node.clone());
                 }
             }
         }
@@ -116,11 +116,11 @@ where
 #[tauri::command]
 pub async fn iterate_roots(_app: AppHandle, event: Channel<ScanEvent>) {
     let mut junk_size: u128 = 0;
-    // let mut root_nodes: Vec<Node> = Vec::new();
+    let mut root_nodes: Vec<Node> = Vec::new();
 
     for root in get_roots() {
         let root_node = iterate_dir(&root, |node| {
-            let dir_info = node.borrow();
+            let dir_info = node.lock().unwrap();
 
             if dir_info.is_file {
                 junk_size = junk_size.saturating_add(dir_info.size);
@@ -134,9 +134,14 @@ pub async fn iterate_roots(_app: AppHandle, event: Channel<ScanEvent>) {
         .await;
 
         if let Ok(_node) = root_node {
-            // path_infos.extend(infos);
+            root_nodes.push(_node);
         }
     }
 
-    // Ok(path_infos)
+    event
+        .send(ScanEvent::Finished {
+            junk_found: junk_size as u64,
+            root_nodes,
+        })
+        .unwrap();
 }
