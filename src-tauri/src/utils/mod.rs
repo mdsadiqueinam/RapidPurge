@@ -165,3 +165,56 @@ pub fn file_allocated_bytes_and_id(path: &Path, meta: &Metadata) -> (u128, Optio
         (meta.len() as u128, None)
     }
 }
+
+pub fn is_excluded(entry: &DirEntry) -> bool {
+    #[cfg(target_os = "windows")]
+    let excluded_paths: [&str; 0] = [];
+
+    #[cfg(target_os = "macos")]
+    let excluded_paths = [
+        "/System",
+        "/private/var",
+        "/private/var/db",
+        "/private/var/tmp",
+        "/private/var/vm",
+        "/private/var/folders",
+        "/private/tmp",
+        "/Volumes",
+        "/dev",
+        "/proc",
+        "/etc",
+        "/usr/sbin",
+        "/usr/bin",
+        "/usr/lib",
+        "/sbin",
+        "/bin",
+        "/Library/Apple",
+        "/System/Volumes",
+        "/System/Volumes/Data/.Spotlight-V100",
+        "/System/Volumes/Data/.fseventsd",
+        "/System/Volumes/Data/.DocumentRevisions-V100",
+        "/System/Volumes/Data/.TemporaryItems",
+        "/System/Volumes/Data/.PKInstallSandboxManager",
+    ];
+
+    #[cfg(target_os = "linux")]
+    let excluded_paths = [
+        "/proc",
+        "/sys",
+        "/dev",
+        "/run",
+        "/run/lock",
+        "/run/user",
+        "/var/run",
+        "/var/lib/docker",
+        "/var/lib/containerd",
+        "/snap",
+        "/tmp",
+        "/lost+found",
+        "/var/cache/apt/archives/partial",
+        "/sys/fs/cgroup",
+    ];
+
+    let p = entry.path().to_string_lossy();
+    excluded_paths.iter().any(|ex| p.starts_with(ex))
+}

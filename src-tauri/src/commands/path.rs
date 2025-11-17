@@ -1,4 +1,4 @@
-use crate::utils::{file_allocated_bytes_and_id, get_roots, is_hidden, FileId};
+use crate::utils::{file_allocated_bytes_and_id, get_roots, is_excluded, is_hidden, FileId};
 use serde::Serialize;
 use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
@@ -51,18 +51,12 @@ pub enum ScanEvent {
 
 fn should_include_dir(entry: &DirEntry) -> bool {
     let is_visible = !is_hidden(entry);
-    let dir_to_exclude = ["/proc", "/sys", "/dev", "/run"];
+    let is_included = !is_excluded(entry);
 
-    let is_dir_included = entry
-        .file_name()
-        .to_str()
-        .map(|s| !dir_to_exclude.contains(&s))
-        .unwrap_or(true);
-
-    return is_visible && is_dir_included;
+    return is_visible && is_included;
 }
 
-pub async fn iterate_dir<F>(root: &str, mut on_dir: F)
+pub async fn iterate_dir<F>(root: &str, mut on_dir: F) -> Result<Node, String>
 where
     F: FnMut(&Node),
 {
@@ -112,14 +106,20 @@ where
             }
         }
     }
+
+    return match path_map.get(root) {
+        Some(root_node) => Ok(root_node.clone()),
+        None => Err(format!("Root path {} not found in path map", root)),
+    };
 }
 
 #[tauri::command]
 pub async fn iterate_roots(_app: AppHandle, event: Channel<ScanEvent>) {
     let mut junk_size: u128 = 0;
+    // let mut root_nodes: Vec<Node> = Vec::new();
 
     for root in get_roots() {
-        iterate_dir(&root, |node| {
+        let root_node = iterate_dir(&root, |node| {
             let dir_info = node.borrow();
 
             if dir_info.is_file {
@@ -130,12 +130,13 @@ pub async fn iterate_roots(_app: AppHandle, event: Channel<ScanEvent>) {
                     last_path_str: dir_info.path.clone(),
                 });
             }
-
-            // println!(
-            //     "Directory: {}, Size: {}, is_file: {}",
-            //     dir_info.path, dir_info.size, dir_info.is_file
-            // );
         })
         .await;
+
+        if let Ok(_node) = root_node {
+            // path_infos.extend(infos);
+        }
     }
+
+    // Ok(path_infos)
 }
