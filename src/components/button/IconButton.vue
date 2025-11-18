@@ -70,7 +70,7 @@ defineExpose({
 </script>
 
 <template>
-  <BaseTooltip :autoPlacement="true" :disabled="!(props.text || slots.content)">
+  <BaseTooltip :disabled="!(props.text || slots.content)">
     <component
       :is="props.to ? RouterLink : 'span'"
       :to="props.to"
