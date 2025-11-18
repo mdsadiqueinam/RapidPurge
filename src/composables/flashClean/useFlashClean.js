@@ -11,18 +11,18 @@ function FlashCleanState() {
   const scanning = computed(() => scanState.value === "progress");
   const finished = computed(() => scanState.value === "finished");
 
-  const event = new Channel();
-
-  event.onmessage = (msg) => {
-    scanState.value = msg.event;
-    scanData.value = msg.data;
-    if (msg.event === "progress") {
-      currentPathStr.value = msg.data.currentPathStr;
-      junkFound.value = formatBytes(msg.data.junkFound);
-    }
-  };
-
   function startScan() {
+    const event = new Channel();
+
+    event.onmessage = (msg) => {
+      scanState.value = msg.event;
+      scanData.value = msg.data;
+      if (msg.event === "progress") {
+        currentPathStr.value = msg.data.currentPathStr;
+        junkFound.value = formatBytes(msg.data.junkFound);
+      }
+    };
+
     invoke("flash_scan", { event });
   }
 
@@ -32,6 +32,7 @@ function FlashCleanState() {
     startScan,
     currentPathStr,
     junkFound,
+    scanState,
   };
 }
 
