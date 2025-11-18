@@ -13,6 +13,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     BaseButton: typeof import('./src/components/button/BaseButton.vue')['default']
     BaseTooltip: typeof import('./src/components/button/BaseTooltip.vue')['default']
+    FlashCleanHome: typeof import('./src/components/flashClean/FlashCleanHome.vue')['default']
+    FlashCleanIndex: typeof import('./src/components/flashClean/FlashCleanIndex.vue')['default']
     IconButton: typeof import('./src/components/button/IconButton.vue')['default']
     MainNav: typeof import('./src/components/navigation/MainNav.vue')['default']
     NavItem: typeof import('./src/components/navigation/NavItem.vue')['default']
