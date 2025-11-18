@@ -17,7 +17,10 @@ const { startScan, currentPathStr, junkFound } = useFlashClean();
       </BaseButton>
     </div>
 
-    {{ currentPathStr }}
+    <PathText
+      :text="currentPathStr"
+      class="mb-4 max-w-2/3 text-sm text-sidebar-selected"
+    />
     {{ junkFound }}
   </div>
 </template>
