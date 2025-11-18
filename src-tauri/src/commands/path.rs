@@ -1,13 +1,13 @@
 use crate::utils::{
-    file_allocated_bytes_and_id, get_flash_scan_paths, is_excluded, is_hidden, FileId,
+    is_hidden,
+    metadata::{file_allocated_bytes_and_id, FileId},
 };
 use serde::Serialize;
 use std::collections::{HashMap, HashSet};
 use std::sync::{Arc, Mutex};
-use tauri::{ipc::Channel, AppHandle};
 use walkdir::{DirEntry, WalkDir};
 
-type Node = Arc<Mutex<PathInfo>>;
+pub type Node = Arc<Mutex<PathInfo>>;
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase", tag = "event")]
@@ -73,9 +73,8 @@ pub enum ScanEvent {
 
 fn should_include_dir(entry: &DirEntry) -> bool {
     let is_visible = !is_hidden(entry);
-    let is_included = !is_excluded(entry);
 
-    return is_visible && is_included;
+    return is_visible;
 }
 
 pub async fn iterate_dir<F>(root: &str, mut on_dir: F) -> Result<Node, String>
@@ -140,37 +139,4 @@ where
         Some(root_node) => Ok(root_node.clone()),
         None => Err(format!("Root path {} not found in path map", root)),
     };
-}
-
-#[tauri::command]
-pub async fn iterate_roots(_app: AppHandle, event: Channel<ScanEvent>) {
-    let mut junk_size: u128 = 0;
-    let mut root_nodes: Vec<Node> = Vec::new();
-
-    for root in get_flash_scan_paths() {
-        let root_node = iterate_dir(&root, |node| {
-            let dir_info = node.lock().unwrap();
-
-            if dir_info.is_file {
-                junk_size = junk_size.saturating_add(dir_info.size);
-            } else {
-                let _ = event.send(ScanEvent::Progress {
-                    junk_found: junk_size,
-                    last_path_str: dir_info.path.clone(),
-                });
-            }
-        })
-        .await;
-
-        if let Ok(_node) = root_node {
-            root_nodes.push(_node);
-        }
-    }
-
-    event
-        .send(ScanEvent::Finished {
-            junk_found: junk_size as u64,
-            root_nodes,
-        })
-        .unwrap();
 }

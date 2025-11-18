@@ -21,7 +21,7 @@ event.onmessage = (msg) => {
 
 async function greet() {
   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  invoke("iterate_roots", { event });
+  invoke("flash_scan", { event });
 }
 
 function formatBytes(bytes) {

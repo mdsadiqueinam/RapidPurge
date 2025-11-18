@@ -1,7 +1,7 @@
 mod commands;
 mod utils;
 
-use commands::path::iterate_roots;
+use commands::flash_clean::flash_scan;
 use commands::system_info::{get_system_info, open_access_panel};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -16,7 +16,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             greet,
-            iterate_roots,
+            flash_scan,
             get_system_info,
             open_access_panel
         ])
