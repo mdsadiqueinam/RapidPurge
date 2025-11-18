@@ -1,25 +1,3 @@
 {
-  "app": {
-    "title": "RapidPurge",
-    "description": "Fast and efficient file cleanup utility"
-  },
-  "navigation": {
-    "home": "Home",
-    "settings": "Settings",
-    "about": "About"
-  },
-  "actions": {
-    "scan": "Scan",
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "save": "Save",
-    "close": "Close"
-  },
-  "messages": {
-    "welcome": "Welcome to RapidPurge",
-    "loading": "Loading...",
-    "success": "Success",
-    "error": "Error",
-    "noData": "No data available"
-  }
+  "APP_TITLE": "RapidPurge"
 }

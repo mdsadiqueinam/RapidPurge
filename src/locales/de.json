@@ -1,25 +1,3 @@
 {
-  "app": {
-    "title": "RapidPurge",
-    "description": "Schnelle und effiziente Datenbereinigungs-Dienstprogramm"
-  },
-  "navigation": {
-    "home": "Startseite",
-    "settings": "Einstellungen",
-    "about": "Über"
-  },
-  "actions": {
-    "scan": "Scannen",
-    "delete": "Löschen",
-    "cancel": "Abbrechen",
-    "save": "Speichern",
-    "close": "Schließen"
-  },
-  "messages": {
-    "welcome": "Willkommen bei RapidPurge",
-    "loading": "Wird geladen...",
-    "success": "Erfolg",
-    "error": "Fehler",
-    "noData": "Keine Daten verfügbar"
-  }
+  "APP_TITLE": "RapidPurge"
 }

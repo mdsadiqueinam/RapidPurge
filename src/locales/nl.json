@@ -1,25 +1,3 @@
 {
-  "app": {
-    "title": "RapidPurge",
-    "description": "Snel en efficiënt hulpprogramma voor bestandsopschoning"
-  },
-  "navigation": {
-    "home": "Startpagina",
-    "settings": "Instellingen",
-    "about": "Over"
-  },
-  "actions": {
-    "scan": "Scannen",
-    "delete": "Verwijderen",
-    "cancel": "Annuleren",
-    "save": "Opslaan",
-    "close": "Sluiten"
-  },
-  "messages": {
-    "welcome": "Welkom bij RapidPurge",
-    "loading": "Laden...",
-    "success": "Succes",
-    "error": "Fout",
-    "noData": "Geen gegevens beschikbaar"
-  }
+  "APP_TITLE": "RapidPurge"
 }
