@@ -21,6 +21,7 @@ export default defineConfig(async () => ({
     Components({
       resolvers: [HeadlessUiResolver()],
       dirs: ["resources/js/shared/components/**", "src/components/**"],
+      dts: true,
     }),
     svgLoader({
       svgoConfig: {

@@ -42,6 +42,53 @@ pub fn get_roots() -> Vec<String> {
     }
 }
 
+pub fn get_flash_scan_paths() -> Vec<String> {
+    #[cfg(target_os = "windows")]
+    {
+        return ('A'..='Z')
+            .filter(|d| std::path::Path::new(&format!("{}:\\", d)).exists())
+            .map(|d| format!("{}:\\", d))
+            .collect();
+    }
+
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    {
+        get_macos_cleanup_paths()
+    }
+}
+
+pub fn get_macos_cleanup_paths() -> Vec<String> {
+    let home = dirs::home_dir().unwrap().to_string_lossy().to_string();
+
+    vec![
+        // Cache and "Junk" Files
+        "/System/Library/Caches".to_string(),
+        format!("{}/Library/Caches", home),
+        "/private/var/folders".to_string(),
+        // Log Files
+        "/Library/Logs".to_string(),
+        format!("{}/Library/Logs", home),
+        "/var/log".to_string(),
+        "/private/var/log".to_string(),
+        format!("{}/Library/Logs/DiagnosticReports", home),
+        "/Library/Logs/DiagnosticReports".to_string(),
+        // Temporary Files
+        "/tmp".to_string(),
+        "/private/tmp".to_string(),
+        "/var/tmp".to_string(),
+        "/private/var/tmp".to_string(),
+        "/private/var/vm".to_string(),
+        // LaunchAgents and LaunchDaemons
+        format!("{}/Library/LaunchAgents", home),
+        "/Library/LaunchAgents".to_string(),
+        "/Library/LaunchDaemons".to_string(),
+        // Downloads Folder
+        format!("{}/Downloads", home),
+        // Trash Folders
+        format!("{}/.Trash", home),
+    ]
+}
+
 pub fn has_system_access() -> bool {
     #[cfg(target_os = "windows")]
     {
@@ -75,7 +122,9 @@ pub fn is_hidden(entry: &DirEntry) -> bool {
         entry
             .file_name()
             .to_str()
-            .map(|s| s.starts_with("."))
+            .map(
+                |s| s.starts_with(".") && s != ".Trash", // exclude .Trash from being hidden
+            )
             .unwrap_or(false)
     }
 }
@@ -171,31 +220,7 @@ pub fn is_excluded(entry: &DirEntry) -> bool {
     let excluded_paths: [&str; 0] = [];
 
     #[cfg(target_os = "macos")]
-    let excluded_paths = [
-        "/System",
-        "/private/var",
-        "/private/var/db",
-        "/private/var/tmp",
-        "/private/var/vm",
-        "/private/var/folders",
-        "/private/tmp",
-        "/Volumes",
-        "/dev",
-        "/proc",
-        "/etc",
-        "/usr/sbin",
-        "/usr/bin",
-        "/usr/lib",
-        "/sbin",
-        "/bin",
-        "/Library/Apple",
-        "/System/Volumes",
-        "/System/Volumes/Data/.Spotlight-V100",
-        "/System/Volumes/Data/.fseventsd",
-        "/System/Volumes/Data/.DocumentRevisions-V100",
-        "/System/Volumes/Data/.TemporaryItems",
-        "/System/Volumes/Data/.PKInstallSandboxManager",
-    ];
+    let excluded_paths = ["/System"];
 
     #[cfg(target_os = "linux")]
     let excluded_paths = [

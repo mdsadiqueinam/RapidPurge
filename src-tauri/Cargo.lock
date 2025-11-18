@@ -2881,6 +2881,7 @@ dependencies = [
 name = "rapid-purge"
 version = "0.1.0"
 dependencies = [
+ "dirs",
  "rayon",
  "serde",
  "serde_json",
