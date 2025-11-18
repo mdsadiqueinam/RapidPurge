@@ -1,6 +1,4 @@
-<script setup>
-import MainNav from "./components/MainNav.vue";
-</script>
+<script setup></script>
 
 <template>
   <div class="flex min-h-screen min-w-screen bg-main text-main-text">
