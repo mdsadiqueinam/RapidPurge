@@ -1,13 +1,13 @@
 <script setup>
-const { t } = useI18n();
+import MainNav from "./components/MainNav.vue";
 </script>
 
 <template>
-  <div
-    class="min-h-screen min-w-screen bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-  >
-    <main class="p-4">
-      {{ t("APP_TITLE") }}
+  <div class="flex min-h-screen min-w-screen bg-main text-main-text">
+    <MainNav />
+
+    <main class="flex-1 p-6">
+      <router-view />
     </main>
   </div>
 </template>

@@ -164,36 +164,42 @@
     --priority-low: #10b981;
 
     /* ***** LIGHT THEME - ULTRA SOFT & MUTED ***** */
-    --divider: #eff1f1;
-    --divider-subtle: #fafbfc66;
-    --divider-hover: #f1f3f5; /* for drag */
-    --divider-outline: #c1c9d2aa; /* for button outline */
+    --divider: #e5e7eb;             /* visible neutral divider */
+    --divider-subtle: #e5e7eb66;     /* subtle border, now actually visible */
+    --divider-hover: #d8dce1;        /* clearer drag handle hover */
+    --divider-outline: #b5bec9aa;    /* outline now meets usability contrast */
+
     /* main - main background */
     --main: #fdfdfe;
-    --main-subtle-hover: #fafbfc;
-    --main-selected: #f6f8fb;
-    --main-text: #5a6570;
-    --main-text-hover: #4a5568;
-    --main-text-muted: #8a919e;
-    --main-selected-text: #4a5568;
+    --main-subtle-hover: #f6f8fb;     /* slightly darker than --main */
+    --main-selected: #eef4fb;         /* selected surface (cards, active rows) */
+    --main-text: #101213;
+    --main-text-hover: #374151;
+    --main-text-muted: #5b6570;       /* readable muted text on --main */
+    --main-selected-text: #24324a;    /* darker text for good contrast on --main-selected */
     --main-unselected: #fafbfc;
-    --main-unselected-text: #a0aab5;
-    --main-unselected-hover: #f7f8fa;
+    --main-unselected-text: #5b6570;  /* readable on --main-unselected */
+    --main-unselected-hover: #f3f5f7; /* hover for unselected items */
+
     /* main 2 - used in sidebar */
     --sidebar: #fafbfc;
-    --sidebar-text: #6b7684;
-    --sidebar-text-hover: #5a6570;
-    --sidebar-hover: #f7f8fa;
-    --sidebar-selected: #f0f4f8;
+    --sidebar-text: #1c1e21;
+    --sidebar-text-hover: #334155;
+    --sidebar-hover: #ebeced;          /* hover state on sidebar items */
+    --sidebar-selected: #dde9f7;      /* selected sidebar item */
+    --sidebar-text-selected: #1b2b44; /* text color for selected sidebar */
     --sidebar-unselected: #f7f8fa;
     --sidebar-unselected-hover: #f4f6f8;
+
     /* Primary button color - Vibrant but refined blue */
     --primary: #4f63d2;
     --primary-hover: #3b4bc8;
     --primary-text: #ffffff;
     --primary-text-hover: #f8f9fa;
-    /* Secondary button color - Muted teal */
-    --secondary-text: #5a9aa8;
+
+    /* Secondary button color - Muted teal (darkened for contrast on light bg) */
+    --secondary-text: #2b7f89;
+
     /* Border colors */
     --border-subtle: #e1e8ed;
     --border-default: #d1dae0;
@@ -201,43 +207,50 @@
   }
 
   .dark {
-    --divider: #3a3f47;
-    --divider-subtle: #3a3f4766;
-    --divider-hover: #44495a; /* for drag */
-    --divider-outline: #5a6070aa; /* for button outline */
+    --divider: #4b5158;              /* clear but soft */
+    --divider-subtle: #4b515866;     /* subtle, but still visible on #1a1d23 */
+    --divider-hover: #58606b;        /* distinct enough for drag handles */
+    --divider-outline: #6a7280aa;    /* outline strong enough for focus rings */
+
     /* main (main background) */
     --main: #1a1d23;
-    --main-subtle-hover: #21252b;
-    --main-text: #c4c9d1;
-    --main-text-hover: #d1d6de;
-    --main-text-muted: #8a919e;
+    --main-subtle-hover: #21252b; /* hover slightly lighter than --main */
+    --main-text: #cbd5e1;
+    --main-text-hover: #e2e8f0;
+    --main-text-muted: #9aa4b0;   /* slightly lighter muted text for dark bg */
     --main-unselected: #21252b;
-    --main-unselected-text: #8a919e;
-    --main-unselected-hover: #2a2f37;
-    --main-selected: #2d3748;
-    --main-selected-text: #b8c5d1;
+    --main-unselected-text: #9aa4b0;
+    --main-unselected-hover: #272c34;
+    --main-selected: #2a3140;     /* selected surfaces — darker, distinct */
+    --main-selected-text: #c0cfe0; /* readable on --main-selected */
+
     /* Sidebar */
     --sidebar: #171a1f;
     --sidebar-text: #c4c9d1;
     --sidebar-text-hover: #d1d6de;
-    --sidebar-text-selected: #e2e6ea;
-    --sidebar-hover: #21252b;
-    --sidebar-selected: #2d3748;
+    --sidebar-text-selected: #eef4ff;
+    --sidebar-hover: #23272f;           /* hover state on sidebar items */
+    --sidebar-selected: #343a4a;        /* selected sidebar item */
     --sidebar-unselected: #21252b;
     --sidebar-unselected-hover: #2a2f37;
-    /* Primary button color - Vibrant blue for dark mode */
-    --primary: #5b6ee8;
-    --primary-hover: #4f63d2;
+
+    /* Primary button color - tuned to ensure white text passes contrast */
+    --primary: #4f63d2;             /* chosen so white text stays >= AA */
+    --primary-hover: #3b4bc8;
     --primary-text: #ffffff;
     --primary-text-hover: #f8f9fa;
+
     /* Secondary button color - Muted teal */
     --secondary-text: #7ba3b0;
+
     /* Border colors */
     --border-subtle: #3a4047;
     --border-default: #4a5568;
     --border-hover: #5a6570;
   }
 }
+
+
 
 @layer utilities {
   .status-change-enter-active,
