@@ -41,7 +41,7 @@ export default defineConfig(async () => ({
         "src/utils/*i18n.js",
         "src/utils/*Shortcut.js",
         "resources/js/shared/use/*.js",
-        "src/composables/*.js",
+        "src/composables/**/*.js",
       ],
       dts: true,
       eslintrc: {

@@ -74,6 +74,7 @@ declare global {
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
   const provide: typeof import('vue').provide
+  const provideFlashClean: typeof import('./src/composables/flashClean/useFlashClean.js').provideFlashClean
   const provideLocal: typeof import('@vueuse/core').provideLocal
   const reactify: typeof import('@vueuse/core').reactify
   const reactifyObject: typeof import('@vueuse/core').reactifyObject
@@ -175,6 +176,7 @@ declare global {
   const useFetch: typeof import('@vueuse/core').useFetch
   const useFileDialog: typeof import('@vueuse/core').useFileDialog
   const useFileSystemAccess: typeof import('@vueuse/core').useFileSystemAccess
+  const useFlashClean: typeof import('./src/composables/flashClean/useFlashClean.js').useFlashClean
   const useFocus: typeof import('@vueuse/core').useFocus
   const useFocusWithin: typeof import('@vueuse/core').useFocusWithin
   const useFps: typeof import('@vueuse/core').useFps

@@ -54,24 +54,6 @@ impl PathInfo {
     }
 }
 
-#[derive(Clone, Serialize)]
-#[serde(
-    rename_all = "camelCase",
-    rename_all_fields = "camelCase",
-    tag = "event",
-    content = "data"
-)]
-pub enum ScanEvent {
-    Progress {
-        junk_found: u128,
-        last_path_str: String,
-    },
-    Finished {
-        junk_found: u64,
-        root_nodes: Vec<Node>,
-    },
-}
-
 fn should_include_dir(entry: &DirEntry) -> bool {
     let is_visible = !is_hidden(entry);
 

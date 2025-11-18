@@ -1,8 +1,27 @@
 use crate::{
-    commands::path::{iterate_dir, Node, ScanEvent},
+    commands::path::{iterate_dir, Node},
     utils::path::get_flash_scan_paths,
 };
+use serde::Serialize;
 use tauri::{ipc::Channel, AppHandle};
+
+#[derive(Clone, Serialize)]
+#[serde(
+    rename_all = "camelCase",
+    rename_all_fields = "camelCase",
+    tag = "event",
+    content = "data"
+)]
+pub enum ScanEvent {
+    Progress {
+        junk_found: u128,
+        current_path_str: String,
+    },
+    Finished {
+        junk_found: u64,
+        root_nodes: Vec<Node>,
+    },
+}
 
 #[tauri::command]
 pub async fn flash_scan(_app: AppHandle, event: Channel<ScanEvent>) {
@@ -18,7 +37,7 @@ pub async fn flash_scan(_app: AppHandle, event: Channel<ScanEvent>) {
             } else {
                 let _ = event.send(ScanEvent::Progress {
                     junk_found: junk_size,
-                    last_path_str: dir_info.path.clone(),
+                    current_path_str: dir_info.path.clone(),
                 });
             }
         })

@@ -1,5 +1,7 @@
 <script setup>
 const { t } = useI18n();
+
+const { startScan, currentPathStr, junkFound } = useFlashClean();
 </script>
 
 <template>
@@ -10,7 +12,12 @@ const { t } = useI18n();
     </p>
 
     <div class="my-8">
-      <BaseButton size="2xl" round class="px-24">{{ t("Scan") }}</BaseButton>
+      <BaseButton size="2xl" round class="px-24" @click="startScan">
+        {{ t("Scan") }}
+      </BaseButton>
     </div>
+
+    {{ currentPathStr }}
+    {{ junkFound }}
   </div>
 </template>

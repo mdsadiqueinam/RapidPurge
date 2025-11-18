@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+provideFlashClean();
+</script>
 
 <template>
   <FlashCleanIndex />
