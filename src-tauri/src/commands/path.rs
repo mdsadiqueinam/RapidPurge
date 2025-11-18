@@ -21,10 +21,11 @@ pub struct PathInfo {
 
 impl PathInfo {
     pub fn new(path: String, size: u128, is_file: bool) -> Node {
-        let name = match std::path::Path::new(&path).file_name() {
-            Some(os_str) => os_str.to_string_lossy().to_string(),
-            None => path.clone(), // root directory case
-        };
+        let name = path
+            .rsplit(std::path::MAIN_SEPARATOR)
+            .next()
+            .unwrap_or("")
+            .to_string();
         Arc::new(Mutex::new(Self {
             name,
             path,
