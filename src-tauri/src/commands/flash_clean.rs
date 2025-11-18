@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{
     commands::path::{iterate_dir, Node},
     utils::path::get_flash_scan_paths,
@@ -26,10 +28,11 @@ pub enum ScanEvent {
 #[tauri::command]
 pub async fn flash_scan(_app: AppHandle, event: Channel<ScanEvent>) {
     let mut junk_size: u128 = 0;
+    let mut node_map: HashMap<String, Node> = HashMap::new();
     let mut root_nodes: Vec<Node> = Vec::new();
 
     for root in get_flash_scan_paths() {
-        let root_node = iterate_dir(&root, |node| {
+        iterate_dir(&root, &mut node_map, |node| {
             let dir_info = node.lock().unwrap();
 
             if dir_info.is_file {
@@ -43,8 +46,8 @@ pub async fn flash_scan(_app: AppHandle, event: Channel<ScanEvent>) {
         })
         .await;
 
-        if let Ok(_node) = root_node {
-            root_nodes.push(_node);
+        if let Some(root_node) = node_map.get(&root) {
+            root_nodes.push(root_node.clone());
         }
     }
 

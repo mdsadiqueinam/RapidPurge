@@ -60,11 +60,10 @@ fn should_include_dir(entry: &DirEntry) -> bool {
     return is_visible;
 }
 
-pub async fn iterate_dir<F>(root: &str, mut on_dir: F) -> Result<Node, String>
+pub async fn iterate_dir<F>(root: &str, node_map: &mut HashMap<String, Node>, mut on_dir: F)
 where
     F: FnMut(&Node),
 {
-    let mut node_map: HashMap<String, Node> = HashMap::new();
     let mut nodes: Vec<Node> = Vec::new();
     let mut seen: HashSet<FileId> = HashSet::new();
 
@@ -117,9 +116,4 @@ where
         let mut node_info = node.lock().unwrap();
         node_info.calculate_size();
     }
-
-    return match node_map.get(root) {
-        Some(root_node) => Ok(root_node.clone()),
-        None => Err(format!("Root path {} not found in path map", root)),
-    };
 }
