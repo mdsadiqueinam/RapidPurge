@@ -107,12 +107,12 @@ defineExpose({
             v-if="props.shortcutKey"
             class="text-main-text/70 ml-2 inline-flex items-center justify-center rounded border border-divider bg-main px-1.5 text-[10px] font-medium uppercase tracking-wide shadow-sm"
           >
-            <span v-if="props.shortcutKey.requireCtrl">{{
-              t("Command key")
-            }}</span>
-            <span v-if="props.shortcutKey.requireShift">{{
-              t("Shift key")
-            }}</span>
+            <span v-if="props.shortcutKey.requireCtrl">
+              {{ t("Command key") }}
+            </span>
+            <span v-if="props.shortcutKey.requireShift">
+              {{ t("Shift key") }}
+            </span>
             <span v-if="props.shortcutKey.requireAlt">{{ t("Alt key") }}</span>
             <span>{{ props.shortcutKey.key }}</span>
           </div>
