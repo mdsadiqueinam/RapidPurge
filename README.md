@@ -1,7 +1,52 @@
-# Tauri + Vue 3
+# RapidPurge
 
-This template should help get you started developing with Tauri + Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+RapidPurge is a desktop utility (built with Tauri, Vue 3, and Rust) for quickly identifying and cleaning large or unnecessary files from your system. It provides a fast, native-like experience with a modern UI while leveraging Rust for performance-critical scanning.
+
+## Features
+
+- Fast file system scanning using a Rust backend
+- "Flash Clean" view for quickly spotting large files and folders
+- Human-readable size formatting (KB/MB/GB)
+- Cross-platform desktop app powered by Tauri
+- Vue 3 front-end with hot-reload for rapid development
+
+## Tech Stack
+
+- **Frontend:** Vue 3, Vite
+- **Backend:** Rust, Tauri
+- **Tooling:** pnpm, ESLint
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js and pnpm installed
+- Rust toolchain installed (via `rustup`)
+
+### Install dependencies
+
+```bash
+pnpm install
+```
+
+### Run in development mode
+
+```bash
+pnpm tauri dev
+```
+
+### Build for production
+
+```bash
+pnpm tauri build
+```
 
 ## Recommended IDE Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- VS Code with the Vue - Official (Volar) extension
+- Tauri VS Code extension
+- rust-analyzer
+
+## License
+
+This project is licensed under the **Elastic License 2.0 (ELv2)**. See the `LICENSE` file for the full license text and terms, including limitations on providing the software as a hosted or managed service.
