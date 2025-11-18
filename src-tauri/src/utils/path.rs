@@ -1,6 +1,6 @@
 use walkdir::DirEntry;
 
-pub fn get_roots() -> Vec<String> {
+pub fn list_root_volumes() -> Vec<String> {
     #[cfg(target_os = "windows")]
     {
         return ('A'..='Z')
@@ -15,7 +15,7 @@ pub fn get_roots() -> Vec<String> {
     }
 }
 
-pub fn get_flash_scan_paths() -> Vec<String> {
+pub fn default_flash_scan_paths() -> Vec<String> {
     let home = dirs::home_dir().unwrap().to_string_lossy().to_string();
 
     #[cfg(target_os = "windows")]
@@ -98,7 +98,7 @@ pub fn get_flash_scan_paths() -> Vec<String> {
     }
 }
 
-pub fn has_system_access() -> bool {
+pub fn has_full_disk_access() -> bool {
     #[cfg(target_os = "windows")]
     {
         // using app.embeded manifest with "requireAdministrator" should suffice
@@ -120,7 +120,7 @@ pub fn has_system_access() -> bool {
     }
 }
 
-pub fn is_hidden(entry: &DirEntry) -> bool {
+pub fn is_hidden_entry(entry: &DirEntry) -> bool {
     #[cfg(target_os = "windows")]
     {
         return true; // TODO: need to iplement later

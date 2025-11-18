@@ -1,4 +1,5 @@
 mod commands;
+mod domain;
 mod utils;
 
 use commands::flash_clean::flash_scan;

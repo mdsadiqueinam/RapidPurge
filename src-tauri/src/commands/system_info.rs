@@ -1,4 +1,4 @@
-use crate::utils::path::has_system_access;
+use crate::utils::path::has_full_disk_access;
 use serde::Serialize;
 
 #[derive(Clone, Serialize)]
@@ -16,7 +16,7 @@ pub fn get_system_info() -> SystemInfo {
     {
         SystemInfo {
             os: "Windows".to_string(),
-            has_system_access: has_system_access(),
+            has_system_access: has_full_disk_access(),
             message: "Full disk access is generally available on Windows.".to_string(),
             can_open_access_panel: false,
         }
@@ -24,7 +24,7 @@ pub fn get_system_info() -> SystemInfo {
 
     #[cfg(target_os = "linux")]
     {
-        let has_access = has_system_access();
+        let has_access = has_full_disk_access();
         SystemInfo {
             os: "Linux".to_string(),
             has_system_access: has_access,
@@ -39,7 +39,7 @@ pub fn get_system_info() -> SystemInfo {
 
     #[cfg(target_os = "macos")]
     {
-        let has_access = has_system_access();
+        let has_access = has_full_disk_access();
         SystemInfo {
             os: "macOS".to_string(),
             has_system_access: has_access,

@@ -40,7 +40,7 @@ pub enum FileId {
 }
 
 /// Return (allocated_bytes, optional FileId)
-pub fn file_allocated_bytes_and_id(
+pub fn allocated_size_and_file_id(
     #[allow(unused)] path: &Path,
     meta: &Metadata,
 ) -> (u128, Option<FileId>) {
