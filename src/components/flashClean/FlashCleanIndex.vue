@@ -1,5 +1,8 @@
-<script setup></script>
+<script setup>
+const { finished } = useFlashClean();
+</script>
 
 <template>
-  <FlashCleanHome />
+  <FlashCleanHome v-if="!finished" />
+  <FlashCleanScanDetails v-if="finished" />
 </template>

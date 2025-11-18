@@ -1,7 +1,8 @@
 <script setup>
 const { t } = useI18n();
 
-const { startScan, currentPathStr, junkFound, scanState } = useFlashClean();
+const { startScan, currentPathStr, junkFound, scanning, finished } =
+  useFlashClean();
 </script>
 
 <template>
@@ -11,17 +12,23 @@ const { startScan, currentPathStr, junkFound, scanState } = useFlashClean();
       {{ t("Find and clean junk files quickly and efficiently.") }}
     </p>
 
-    <div class="my-8">
+    <!-- Show Scan button when not scanning and not finished -->
+    <div v-if="!scanning && !finished" class="my-8">
       <BaseButton size="2xl" round class="px-24" @click="startScan">
         {{ t("Scan") }}
       </BaseButton>
     </div>
 
-    <PathText
-      :text="currentPathStr"
-      class="mb-4 max-w-[300px] text-sm text-sidebar-selected"
-    />
-    {{ junkFound }}
-    {{ scanState }}
+    <!-- Show PathText and junkFound during scanning -->
+    <template v-if="scanning">
+      <PathText
+        :text="currentPathStr"
+        class="my-8 max-w-[300px] text-sm text-sidebar-selected"
+      />
+
+      <div class="my-8 text-2xl font-medium">
+        {{ junkFound }}
+      </div>
+    </template>
   </div>
 </template>

@@ -26,6 +26,13 @@ function FlashCleanState() {
     invoke("flash_scan", { event });
   }
 
+  function resetState() {
+    scanData.value = null;
+    scanState.value = null;
+    currentPathStr.value = "";
+    junkFound.value = "0 B";
+  }
+
   return {
     scanning,
     finished,
@@ -33,6 +40,7 @@ function FlashCleanState() {
     currentPathStr,
     junkFound,
     scanState,
+    resetState,
   };
 }
 
