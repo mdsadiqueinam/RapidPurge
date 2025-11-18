@@ -339,7 +339,7 @@ watch(shouldShow, (value) => {
   <span
     v-if="!props.target"
     ref="targetRef"
-    class="max-w-fit"
+    class="inline-block"
     :class="props.defaultClass"
   >
     <slot />
