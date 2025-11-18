@@ -21,6 +21,6 @@ const restParts = computed(() => {
 <template>
   <div class="flex flex-nowrap">
     <div class="truncate">{{ restParts }}</div>
-    <div>{{ name }}</div>
+    <div class="text-nowrap whitespace-nowrap">{{ name }}</div>
   </div>
 </template>

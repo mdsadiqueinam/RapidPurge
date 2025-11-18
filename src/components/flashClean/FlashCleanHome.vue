@@ -1,7 +1,7 @@
 <script setup>
 const { t } = useI18n();
 
-const { startScan, currentPathStr, junkFound } = useFlashClean();
+const { startScan, currentPathStr, junkFound, scanState } = useFlashClean();
 </script>
 
 <template>
@@ -19,8 +19,9 @@ const { startScan, currentPathStr, junkFound } = useFlashClean();
 
     <PathText
       :text="currentPathStr"
-      class="mb-4 max-w-2/3 text-sm text-sidebar-selected"
+      class="mb-4 max-w-1/2 text-sm text-sidebar-selected"
     />
     {{ junkFound }}
+    {{ scanState }}
   </div>
 </template>
