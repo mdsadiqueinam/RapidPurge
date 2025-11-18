@@ -19,7 +19,7 @@ const { startScan, currentPathStr, junkFound, scanState } = useFlashClean();
 
     <PathText
       :text="currentPathStr"
-      class="mb-4 max-w-1/2 text-sm text-sidebar-selected"
+      class="mb-4 max-w-[300px] text-sm text-sidebar-selected"
     />
     {{ junkFound }}
     {{ scanState }}
