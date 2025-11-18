@@ -1,6 +1,6 @@
 use crate::{
     commands::path::{iterate_dir, Node, ScanEvent},
-    utils::get_flash_scan_paths,
+    utils::path::get_flash_scan_paths,
 };
 use tauri::{ipc::Channel, AppHandle};
 

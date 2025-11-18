@@ -40,7 +40,10 @@ pub enum FileId {
 }
 
 /// Return (allocated_bytes, optional FileId)
-pub fn file_allocated_bytes_and_id(path: &Path, meta: &Metadata) -> (u128, Option<FileId>) {
+pub fn file_allocated_bytes_and_id(
+    #[allow(unused)] path: &Path,
+    meta: &Metadata,
+) -> (u128, Option<FileId>) {
     #[cfg(any(target_os = "linux", target_os = "macos"))]
     {
         // st_blocks * 512 is number of 512-byte blocks allocated on disk (UNIX)

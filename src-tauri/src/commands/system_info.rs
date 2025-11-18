@@ -1,4 +1,4 @@
-use crate::utils::has_system_access;
+use crate::utils::path::has_system_access;
 use serde::Serialize;
 
 #[derive(Clone, Serialize)]

@@ -1,6 +1,6 @@
 use crate::utils::{
-    is_hidden,
     metadata::{file_allocated_bytes_and_id, FileId},
+    path::is_hidden,
 };
 use serde::Serialize;
 use std::collections::{HashMap, HashSet};
