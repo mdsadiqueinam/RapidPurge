@@ -1,29 +1,11 @@
 use std::collections::HashMap;
 
 use crate::{
-    domain::flash_scan::model::Node, domain::walker::walk_and_build_tree,
+    domain::models::{event::ScanEvent, path::Node},
+    domain::walker::walk_and_build_tree,
     utils::path::default_flash_scan_paths,
 };
-use serde::Serialize;
 use tauri::{ipc::Channel, AppHandle};
-
-#[derive(Clone, Serialize)]
-#[serde(
-    rename_all = "camelCase",
-    rename_all_fields = "camelCase",
-    tag = "event",
-    content = "data"
-)]
-pub enum ScanEvent {
-    Progress {
-        junk_found: u128,
-        current_path_str: String,
-    },
-    Finished {
-        junk_found: u64,
-        root_nodes: Vec<Node>,
-    },
-}
 
 #[tauri::command]
 pub async fn flash_scan(_app: AppHandle, event: Channel<ScanEvent>) {
