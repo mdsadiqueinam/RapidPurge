@@ -7,5 +7,11 @@
   "Switch to dark mode": "Switch to dark mode",
   "Flash Clean": "Flash Clean",
   "Find and clean junk files quickly and efficiently.": "Find and clean junk files quickly and efficiently.",
-  "Scan": "Scan"
+  "Scan": "Scan",
+  "Scan Complete": "Scan Complete",
+  "Review the junk files found on your system": "Review the junk files found on your system",
+  "Total Junk Found": "Total Junk Found",
+  "Scan Again": "Scan Again",
+  "Clean Now": "Clean Now",
+  "Scanning": "Scanning"
 }
