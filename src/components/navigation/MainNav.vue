@@ -7,7 +7,7 @@ const { t } = useI18n();
 const navigationItems = [
   {
     label: "Flash Clean",
-    route: "/flash-clean",
+    route: "/FlashClean",
     icon: BoltIcon,
     iconClass: "text-amber-300",
   },

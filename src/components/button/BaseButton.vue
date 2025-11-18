@@ -44,7 +44,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return ["xs", "sm", "md", "lg"].includes(value);
+      return ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"].includes(value);
     },
   },
   isOpen: {
@@ -58,6 +58,10 @@ const props = defineProps({
   compRef: {
     type: Function,
     default: () => {},
+  },
+  round: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -109,6 +113,12 @@ const heightClass = computed(() => {
       return "h-6";
     case "lg":
       return "h-10";
+    case "xl":
+      return "h-12";
+    case "2xl":
+      return "h-14";
+    case "3xl":
+      return "h-16";
     case "md":
     default:
       return "h-8";
@@ -125,6 +135,13 @@ const widthClass = computed(() => {
     case "md":
       return "w-8";
     case "lg":
+      return "w-10";
+    case "xl":
+      return "w-12";
+    case "2xl":
+      return "w-14";
+    case "3xl":
+      return "w-16";
     default:
       return "w-10";
   }
@@ -138,6 +155,12 @@ const fontClass = computed(() => {
       return "text-12";
     case "lg":
       return "text-16";
+    case "xl":
+      return "text-[18px]";
+    case "2xl":
+      return "text-[20px]";
+    case "3xl":
+      return "text-[24px]";
     case "md":
     default:
       return "text-baseline";
@@ -153,16 +176,28 @@ const paddingClass = computed(() => {
       return "px-2";
     case "lg":
       return "px-4";
+    case "xl":
+      return "px-5";
+    case "2xl":
+      return "px-6";
+    case "3xl":
+      return "px-7";
     case "md":
     default:
       return "px-3";
   }
 });
 
+const borderRadiusClass = computed(() => {
+  if (props.round) return "rounded-full";
+  if (props.iconOnly) return "";
+  return "rounded-md";
+});
+
 const baseClasses = computed(() => {
   return [
     "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-80 whitespace-nowrap select-none",
-    !props.iconOnly ? "rounded-md" : "",
+    borderRadiusClass.value,
     fontClass.value,
     heightClass.value,
     widthClass.value,
@@ -179,9 +214,18 @@ const classes = computed(() => {
         ? "text-10"
         : props.size === "sm"
         ? "text-12"
+        : props.size === "lg"
+        ? "text-20"
+        : props.size === "xl"
+        ? "text-[24px]"
+        : props.size === "2xl"
+        ? "text-[28px]"
+        : props.size === "3xl"
+        ? "text-[32px]"
         : "text-20";
+    const borderClass = props.round ? "rounded-full!" : "rounded-lg!";
     classes.push(
-      `rounded-lg! ${widthClass.value} ${heightClass.value} ${textSizeClass}`
+      `${borderClass} ${widthClass.value} ${heightClass.value} ${textSizeClass}`
     );
   }
 
