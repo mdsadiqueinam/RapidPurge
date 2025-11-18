@@ -54,6 +54,11 @@ const hovered = ref(false);
 const clicked = ref(false);
 const targetRef = useTemplateRef("targetRef");
 const tooltipRef = useTemplateRef("tooltipRef");
+
+// Touch device detection
+const isTouchDevice = ref(
+  "ontouchstart" in window || navigator.maxTouchPoints > 0
+);
 const tooltipPosition = reactive({
   left: 0,
   top: 0,
@@ -292,6 +297,11 @@ function updateTooltipPosition() {
  */
 
 const shouldShow = computed(() => {
+  // Don't show tooltip on touch devices
+  if (isTouchDevice.value) {
+    return false;
+  }
+
   if (props.disabled) {
     return false;
   }
@@ -347,7 +357,7 @@ watch(shouldShow, (value) => {
     >
       <div
         ref="tooltipRef"
-        class="fixed z-9999 flex min-h-8 min-w-[124px] max-w-[400px] items-center rounded-xl border border-divider-hover bg-main-unselected text-sm text-sidebar-text shadow-xl ring-1 ring-black/5 backdrop-blur-sm focus:outline-none"
+        class="fixed z-9999 flex min-h-8 max-w-[400px] items-center rounded-lg border border-divider-hover bg-main-unselected text-sm text-sidebar-text shadow-lg focus:outline-none"
         :style="{
           left: `${tooltipPosition.left}px`,
           top: `${tooltipPosition.top}px`,

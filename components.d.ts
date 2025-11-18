@@ -20,5 +20,6 @@ declare module 'vue' {
     NodesList: typeof import('./src/components/nodes/NodesList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ThemeToggleButton: typeof import('./src/components/button/ThemeToggleButton.vue')['default']
   }
 }

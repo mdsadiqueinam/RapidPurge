@@ -2,5 +2,7 @@
   "APP_TITLE": "RapidPurge",
   "Command key": "Command key",
   "Shift key": "Shift key",
-  "Alt key": "Alt key"
+  "Alt key": "Alt key",
+  "Switch to light mode": "Switch to light mode",
+  "Switch to dark mode": "Switch to dark mode"
 }

@@ -23,5 +23,9 @@ const navigationItems = [
     <nav class="flex-1 px-3 py-4">
       <NavItem v-for="item in navigationItems" :key="item.route" :item="item" />
     </nav>
+
+    <div class="p-4 border-t border-divider">
+      <ThemeToggleButton />
+    </div>
   </aside>
 </template>
