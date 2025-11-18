@@ -1,5 +1,6 @@
 <script setup>
 import NavItem from "./NavItem.vue";
+import { BoltIcon } from "@heroicons/vue/24/outline";
 
 const { t } = useI18n();
 
@@ -7,7 +8,8 @@ const navigationItems = [
   {
     label: "Flash Clean",
     route: "/flash-clean",
-    icon: "⚡",
+    icon: BoltIcon,
+    iconClass: "text-amber-300",
   },
 ];
 </script>
@@ -19,13 +21,7 @@ const navigationItems = [
     </div>
 
     <nav class="flex-1 px-3 py-4">
-      <NavItem
-        v-for="item in navigationItems"
-        :key="item.route"
-        :label="item.label"
-        :route="item.route"
-        :icon="item.icon"
-      />
+      <NavItem v-for="item in navigationItems" :key="item.route" :item="item" />
     </nav>
   </aside>
 </template>
