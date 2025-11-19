@@ -3,7 +3,7 @@ use std::sync::LazyLock;
 use crate::domain::models::flash_scan::FlashScanCategory;
 
 #[cfg(target_os = "windows")]
-static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|| {
+pub(crate) static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|| {
     vec![
         FlashScanCategory {
             id: "TEMP_FILES".to_string(),
@@ -66,7 +66,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
 });
 
 #[cfg(target_os = "macos")]
-static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|| {
+pub(crate) static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|| {
     let home = dirs::home_dir()
         .unwrap_or(std::path::PathBuf::from("/Users/Unknown"))
         .to_string_lossy()
@@ -248,7 +248,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
 });
 
 #[cfg(target_os = "linux")]
-static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|| {
+pub(crate) static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|| {
     let home = dirs::home_dir().unwrap().to_string_lossy().to_string();
     vec![
         FlashScanCategory {

@@ -3,7 +3,7 @@ use std::sync::{Arc, Mutex};
 
 pub type Node = Arc<Mutex<PathInfo>>;
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct PathInfo {
     pub name: String,
