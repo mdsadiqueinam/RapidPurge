@@ -1,5 +1,8 @@
+use regex::RegexSet;
+
 pub struct FlashScanCategory {
     pub name: String,
     pub paths: Vec<String>,
-    pub is_sub_path: bool,
+    pub regexp: Option<RegexSet>,
+    pub sub_categories: Option<Vec<FlashScanCategory>>,
 }
