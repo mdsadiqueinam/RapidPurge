@@ -1,3 +1,37 @@
+use crate::domain::models::flash_scan::FlashScanCategory;
+
+pub fn default_flash_scan_categories() -> Vec<FlashScanCategory> {
+    let home = dirs::home_dir().unwrap().to_string_lossy().to_string();
+
+    #[cfg(target_os = "macos")]
+    {
+        vec![
+            FlashScanCategory {
+                name: "User Cache".to_string(),
+                paths: vec![format!("{}/Library/Caches", home)],
+                is_sub_path: false,
+            },
+            FlashScanCategory {
+                name: "System Cache".to_string(),
+                paths: vec![
+                    "/System/Library/Caches".to_string(),
+                    "/private/var/folders".to_string(),
+                    "/var/folders".to_string(),
+                ],
+                is_sub_path: false,
+            },
+            FlashScanCategory {
+                name: "Browser Cache".to_string(),
+                paths: vec![
+                    format!("{}/Library/Safari", home),
+                    "private/var/folders/**/com. browser specific".to_string(),
+                ],
+                is_sub_path: true,
+            },
+        ]
+    }
+}
+
 pub fn default_flash_scan_paths() -> Vec<String> {
     let home = dirs::home_dir().unwrap().to_string_lossy().to_string();
 
@@ -18,6 +52,7 @@ pub fn default_flash_scan_paths() -> Vec<String> {
             "/System/Library/Caches".to_string(),
             format!("{}/Library/Caches", home),
             "/private/var/folders".to_string(),
+            "/var/folders".to_string(),
             // ────────────────────────
             // Log Files
             // ────────────────────────
