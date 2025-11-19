@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
-use crate::domain::models::{event::ScanEvent, path::Node};
+use crate::domain::models::path::Node;
 use crate::domain::walker::walk_and_build_tree;
 
 pub async fn perform_flash_scan<F>(paths: &[String], mut on_event: F) -> (u64, Vec<Node>)
 where
-    F: FnMut(ScanEvent),
+    F: FnMut(&u128, &str) -> (),
 {
     let mut total_junk_bytes: u128 = 0;
     let mut node_map: HashMap<String, Node> = HashMap::new();
@@ -18,10 +18,7 @@ where
             if node_info.is_file {
                 total_junk_bytes = total_junk_bytes.saturating_add(node_info.size);
             } else {
-                on_event(ScanEvent::Progress {
-                    junk_found: total_junk_bytes,
-                    current_path_str: node_info.path.clone(),
-                });
+                on_event(&total_junk_bytes, &node_info.path);
             }
         })
         .await;
