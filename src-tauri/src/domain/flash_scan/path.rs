@@ -6,6 +6,7 @@ use crate::domain::models::flash_scan::FlashScanCategory;
 static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|| {
     vec![
         FlashScanCategory {
+            id: "TEMP_FILES".to_string(),
             name: "Temporary Files".to_string(),
             paths: vec![
                 "C:\\Windows\\Temp".to_string(),
@@ -15,17 +16,20 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "RECYCLE_BIN".to_string(),
             name: "Recycle Bin".to_string(),
             paths: vec!["C:\\$Recycle.Bin".to_string()],
             regexp: None,
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "BROWSER_CACHE".to_string(),
             name: "Browser Cache".to_string(),
             paths: Vec::new(),
             regexp: None,
             sub_categories: Some(vec![
                 FlashScanCategory {
+                    id: "EDGE".to_string(),
                     name: "Edge".to_string(),
                     paths: vec![],
                     regexp: Some(
@@ -37,6 +41,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
                     sub_categories: None,
                 },
                 FlashScanCategory {
+                    id: "CHROME".to_string(),
                     name: "Chrome".to_string(),
                     paths: vec![],
                     regexp: Some(
@@ -46,6 +51,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
                     sub_categories: None,
                 },
                 FlashScanCategory {
+                    id: "FIREFOX".to_string(),
                     name: "Firefox".to_string(),
                     paths: vec![],
                     regexp: Some(
@@ -68,12 +74,14 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
 
     vec![
         FlashScanCategory {
+            id: "USER_CACHE".to_string(),
             name: "User Cache".to_string(),
             paths: vec![format!("{}/Library/Caches", home)],
             regexp: None,
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "SYSTEM_CACHE".to_string(),
             name: "System Cache".to_string(),
             paths: vec![
                 "/System/Library/Caches".to_string(),
@@ -84,11 +92,13 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "BROWSER_CACHE".to_string(),
             name: "Browser Cache".to_string(),
             paths: Vec::new(),
             regexp: None,
             sub_categories: Some(vec![
                 FlashScanCategory {
+                    id: "SAFARI".to_string(),
                     name: "Safari".to_string(),
                     paths: Vec::new(),
                     regexp: Some(
@@ -101,6 +111,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
                     sub_categories: None,
                 },
                 FlashScanCategory {
+                    id: "CHROME".to_string(),
                     name: "Chrome".to_string(),
                     paths: Vec::new(),
                     regexp: Some(
@@ -113,6 +124,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
                     sub_categories: None,
                 },
                 FlashScanCategory {
+                    id: "FIREFOX".to_string(),
                     name: "Firefox".to_string(),
                     paths: Vec::new(),
                     regexp: Some(
@@ -125,6 +137,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
                     sub_categories: None,
                 },
                 FlashScanCategory {
+                    id: "EDGE".to_string(),
                     name: "Edge".to_string(),
                     paths: Vec::new(),
                     regexp: Some(
@@ -137,6 +150,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
                     sub_categories: None,
                 },
                 FlashScanCategory {
+                    id: "OPERA".to_string(),
                     name: "Opera".to_string(),
                     paths: Vec::new(),
                     regexp: Some(
@@ -149,6 +163,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
                     sub_categories: None,
                 },
                 FlashScanCategory {
+                    id: "BRAVE".to_string(),
                     name: "Brave".to_string(),
                     paths: Vec::new(),
                     regexp: Some(
@@ -163,6 +178,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
             ]),
         },
         FlashScanCategory {
+            id: "LOG_FILES".to_string(),
             name: "System Log Files".to_string(),
             paths: vec![
                 "/Library/Logs".to_string(),
@@ -174,6 +190,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "USER_LOG_FILES".to_string(),
             name: "User Log Files".to_string(),
             paths: vec![
                 format!("{}/Library/Logs", home),
@@ -183,6 +200,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "TEMP_FILES".to_string(),
             name: "Temporary Files".to_string(),
             paths: vec![
                 "/tmp".to_string(),
@@ -195,18 +213,21 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "DOWNLOADS".to_string(),
             name: "Downloads".to_string(),
             paths: vec![format!("{}/Downloads", home)],
             regexp: None,
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "TRASH".to_string(),
             name: "Trash".to_string(),
             paths: vec![format!("{}/.Trash", home)],
             regexp: None,
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "LAUNCH_AGENTS_DAEMONS".to_string(),
             name: "LaunchAgents and LaunchDaemons".to_string(),
             paths: vec![
                 format!("{}/Library/LaunchAgents", home),
@@ -217,6 +238,7 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "DMG_FILES".to_string(),
             name: "Unused DMG Files".to_string(),
             paths: vec![],
             regexp: Some(regex::RegexSet::new(&[r".*\.dmg$"]).unwrap()),
@@ -230,30 +252,35 @@ static FLASH_SCAN_CATEGORIES: LazyLock<Vec<FlashScanCategory>> = LazyLock::new(|
     let home = dirs::home_dir().unwrap().to_string_lossy().to_string();
     vec![
         FlashScanCategory {
-            name: "Cache and Junk Files".to_string(),
+            id: "CACHE_FILES".to_string(),
+            name: "Cache Files".to_string(),
             paths: vec!["/var/cache".to_string(), format!("{}/.cache", home)],
             regexp: None,
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "LOG_FILES".to_string(),
             name: "Log Files".to_string(),
             paths: vec!["/var/log".to_string()],
             regexp: None,
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "TEMP_FILES".to_string(),
             name: "Temporary Files".to_string(),
             paths: vec!["/tmp".to_string(), "/var/tmp".to_string()],
             regexp: None,
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "DOWNLOADS".to_string(),
             name: "Downloads".to_string(),
             paths: vec![format!("{}/Downloads", home)],
             regexp: None,
             sub_categories: None,
         },
         FlashScanCategory {
+            id: "TRASH_FOLDERS".to_string(),
             name: "Trash Folders".to_string(),
             paths: vec![format!("{}/.local/share/Trash", home)],
             regexp: None,
