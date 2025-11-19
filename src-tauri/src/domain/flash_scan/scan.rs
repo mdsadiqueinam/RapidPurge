@@ -13,7 +13,7 @@ where
     let mut root_nodes: Vec<Node> = Vec::new();
 
     for root in paths {
-        walk_and_build_tree(root, &mut node_map, |node| {
+        walk_and_build_tree(root, &mut node_map, false, |node| {
             let node_info = node.lock().unwrap();
 
             if node_info.is_file {

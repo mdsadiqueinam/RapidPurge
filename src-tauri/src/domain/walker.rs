@@ -6,6 +6,8 @@ use crate::utils::{
 use std::collections::{HashMap, HashSet};
 use walkdir::{DirEntry, WalkDir};
 
+static LARGE_FILE_SIZE: u128 = 50 * 1024 * 1024; // 50 MB
+
 fn should_visit_entry(entry: &DirEntry) -> bool {
     !is_hidden_entry(entry)
 }
@@ -13,6 +15,7 @@ fn should_visit_entry(entry: &DirEntry) -> bool {
 pub async fn walk_and_build_tree<F>(
     root: &str,
     node_map: &mut HashMap<String, Node>,
+    skip_small_files: bool,
     mut on_node: F,
 ) where
     F: FnMut(&Node),
@@ -36,6 +39,9 @@ pub async fn walk_and_build_tree<F>(
                         // already counted same inode/file id
                         continue;
                     }
+                }
+                if skip_small_files && alloc < LARGE_FILE_SIZE {
+                    continue;
                 }
                 alloc
             } else {
