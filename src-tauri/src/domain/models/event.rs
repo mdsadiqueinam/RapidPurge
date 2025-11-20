@@ -1,4 +1,4 @@
-use crate::domain::categorised::CategorisedNode;
+use crate::domain::category::CategorisedNode;
 use serde::Serialize;
 
 #[derive(Clone, Serialize)]

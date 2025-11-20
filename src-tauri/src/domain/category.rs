@@ -2,13 +2,23 @@ use std::cmp::Reverse;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 
+use regex::RegexSet;
 use serde::Serialize;
 
 use crate::domain::flash_scan::path::FLASH_SCAN_CATEGORIES;
-use crate::domain::models::flash_scan::FlashScanCategory;
 use crate::domain::models::path::Node;
 
-pub type CategorisedNode = Arc<Mutex<CategorisedFlashScan>>;
+#[derive(Clone, Debug)]
+pub struct ScanCategory {
+    pub id: String,
+    pub name: String,
+    pub priority: u32,
+    pub paths: Vec<String>,
+    pub regexp: Option<RegexSet>,
+    pub sub_categories: Option<Vec<ScanCategory>>,
+}
+
+pub type CategorisedNode = Arc<Mutex<CategorisedScan>>;
 
 #[derive(Clone, Serialize, Debug)]
 #[serde(
@@ -24,30 +34,30 @@ pub enum CategoryContents {
 
 #[derive(Clone, Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct CategorisedFlashScan {
+pub struct CategorisedScan {
     pub category_id: String,
     pub nodes: CategoryContents,
 }
 
-impl CategorisedFlashScan {
+impl CategorisedScan {
     fn new_from(category_id: String, nodes: CategoryContents) -> CategorisedNode {
         Arc::new(Mutex::new(Self { category_id, nodes }))
     }
 
     fn new_node(category_id: String, nodes: Vec<Node>) -> CategorisedNode {
-        CategorisedFlashScan::new_from(category_id, CategoryContents::Nodes(nodes))
+        CategorisedScan::new_from(category_id, CategoryContents::Nodes(nodes))
     }
 
     fn new_subcategories(
         category_id: String,
         sub_categories: Vec<CategorisedNode>,
     ) -> CategorisedNode {
-        CategorisedFlashScan::new_from(category_id, CategoryContents::SubCategories(sub_categories))
+        CategorisedScan::new_from(category_id, CategoryContents::SubCategories(sub_categories))
     }
 }
 
 pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<CategorisedNode> {
-    let mut cats: Vec<&FlashScanCategory> = Vec::new();
+    let mut cats: Vec<&ScanCategory> = Vec::new();
     for cat in FLASH_SCAN_CATEGORIES.iter() {
         if let Some(subs) = &cat.sub_categories {
             cats.extend(subs.iter());
@@ -82,7 +92,7 @@ pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<Cat
 }
 
 fn build_category_tree(
-    category: &FlashScanCategory,
+    category: &ScanCategory,
     cat_map: &HashMap<String, CategorisedNode>,
 ) -> CategorisedNode {
     if let Some(sub_categories) = &category.sub_categories {
@@ -95,18 +105,18 @@ fn build_category_tree(
         }
 
         if !sub_results.is_empty() {
-            return CategorisedFlashScan::new_subcategories(category.id.clone(), sub_results);
+            return CategorisedScan::new_subcategories(category.id.clone(), sub_results);
         }
     }
 
     cat_map
         .get(&category.id)
         .cloned()
-        .unwrap_or_else(|| CategorisedFlashScan::new_node(category.id.clone(), Vec::new()))
+        .unwrap_or_else(|| CategorisedScan::new_node(category.id.clone(), Vec::new()))
 }
 
 fn build_category(
-    category: &FlashScanCategory,
+    category: &ScanCategory,
     node_map: &mut HashMap<String, Node>,
 ) -> CategorisedNode {
     let mut nodes: Vec<Node> = Vec::new();
@@ -129,7 +139,7 @@ fn build_category(
         }
     }
 
-    CategorisedFlashScan::new_node(category.id.clone(), nodes)
+    CategorisedScan::new_node(category.id.clone(), nodes)
 }
 
 fn category_has_content(node: &CategorisedNode) -> bool {

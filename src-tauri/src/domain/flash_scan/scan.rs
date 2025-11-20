@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::domain::categorised::{categorise_scanned_paths, CategorisedNode};
+use crate::domain::category::{categorise_scanned_paths, CategorisedNode};
 use crate::domain::models::path::Node;
 use crate::domain::walker::walk_and_build_tree;
 
