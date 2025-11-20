@@ -4,5 +4,5 @@ const { finished } = useFlashClean();
 
 <template>
   <FlashCleanHome v-if="!finished" />
-  <FlashCleanScanDetails v-if="finished" />
+  <FlashCleanScanPreview v-if="finished" />
 </template>
