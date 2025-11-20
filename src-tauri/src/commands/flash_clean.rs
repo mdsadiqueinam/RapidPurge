@@ -7,7 +7,7 @@ use tauri::{ipc::Channel, AppHandle};
 #[tauri::command]
 pub async fn flash_scan(_app: AppHandle, event: Channel<ScanEvent>) {
     let scan_paths = default_flash_scan_paths();
-    let (total_junk_bytes, root_nodes) =
+    let (total_junk_bytes, nodes) =
         perform_flash_scan(&scan_paths, |total_junk_bytes, path_str| {
             event
                 .send(ScanEvent::Progress {
@@ -21,7 +21,7 @@ pub async fn flash_scan(_app: AppHandle, event: Channel<ScanEvent>) {
     event
         .send(ScanEvent::Finished {
             junk_found: total_junk_bytes,
-            root_nodes,
+            nodes,
         })
         .unwrap();
 }
