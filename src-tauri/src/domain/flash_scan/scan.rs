@@ -1,6 +1,6 @@
 use std::cmp::Reverse;
 use std::collections::HashMap;
-use std::hash::Hash;
+use std::sync::{Arc, Mutex};
 
 use crate::domain::flash_scan::path::FLASH_SCAN_CATEGORIES;
 use crate::domain::models::flash_scan::FlashScanCategory;
@@ -35,11 +35,27 @@ where
     (total_junk_bytes as u64, root_nodes)
 }
 
+type CategorisedNode = Arc<Mutex<CategorisedFlashScan>>;
+
 #[derive(Clone, Debug)]
 pub struct CategorisedFlashScan {
     pub category_id: String,
     pub nodes: Vec<Node>,
     pub sub_categories: Option<Vec<CategorisedFlashScan>>,
+}
+
+impl CategorisedFlashScan {
+    fn new_from(
+        category_id: String,
+        nodes: Vec<Node>,
+        sub_categories: Option<Vec<CategorisedFlashScan>>,
+    ) -> CategorisedNode {
+        Arc::new(Mutex::new(Self {
+            category_id,
+            nodes,
+            sub_categories,
+        }))
+    }
 }
 
 pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<CategorisedFlashScan> {
