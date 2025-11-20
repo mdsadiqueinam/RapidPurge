@@ -1,5 +1,6 @@
 use std::cmp::Reverse;
 use std::collections::HashMap;
+use std::hash::Hash;
 
 use crate::domain::flash_scan::path::FLASH_SCAN_CATEGORIES;
 use crate::domain::models::flash_scan::FlashScanCategory;
@@ -54,9 +55,46 @@ pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<Cat
     // Sort in descending order of priority
     cats.sort_by_key(|c| Reverse(c.priority));
 
-    cats.into_iter()
+    let scanned_categories = cats
+        .into_iter()
         .map(|cat| build_category(cat, node_map))
-        .collect()
+        .collect();
+
+    return scanned_categories;
+}
+
+fn build_category_tree(categorised: &Vec<CategorisedFlashScan>) -> Vec<CategorisedFlashScan> {
+    let mut result: Vec<CategorisedFlashScan> = Vec::new();
+    let mut cat_map: HashMap<String, &CategorisedFlashScan> = HashMap::new();
+
+    for cat in categorised.iter() {
+        cat_map.insert(cat.category_id.clone(), &cat);
+    }
+
+    for cat in FLASH_SCAN_CATEGORIES.iter() {
+        let category_id = &cat.id;
+        let scanned_cat = match cat_map.get(category_id) {
+            Some(c) => (*c).clone(),
+            None => continue,
+        };
+
+        result.push(scanned_cat);
+
+        if let Some(sub_cats) = &cat.sub_categories {
+            let mut scanned_sub_cats: Vec<CategorisedFlashScan> = Vec::new();
+            for sub_cat in sub_cats.iter() {
+                if let Some(scanned_sub_cat) = cat_map.get(&sub_cat.id) {
+                    scanned_sub_cats.push((*scanned_sub_cat).clone());
+                }
+            }
+
+            if let Some(last) = result.last_mut() {
+                last.sub_categories = Some(scanned_sub_cats);
+            }
+        }
+    }
+
+    return result;
 }
 
 fn build_category(
