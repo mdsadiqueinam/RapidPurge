@@ -41,14 +41,14 @@ type CategorisedNode = Arc<Mutex<CategorisedFlashScan>>;
 pub struct CategorisedFlashScan {
     pub category_id: String,
     pub nodes: Vec<Node>,
-    pub sub_categories: Option<Vec<CategorisedFlashScan>>,
+    pub sub_categories: Option<Vec<CategorisedNode>>,
 }
 
 impl CategorisedFlashScan {
     fn new_from(
         category_id: String,
         nodes: Vec<Node>,
-        sub_categories: Option<Vec<CategorisedFlashScan>>,
+        sub_categories: Option<Vec<CategorisedNode>>,
     ) -> CategorisedNode {
         Arc::new(Mutex::new(Self {
             category_id,
@@ -58,7 +58,7 @@ impl CategorisedFlashScan {
     }
 }
 
-pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<CategorisedFlashScan> {
+pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<CategorisedNode> {
     let mut cats: Vec<&FlashScanCategory> = Vec::new();
     for cat in FLASH_SCAN_CATEGORIES.iter() {
         if let Some(subs) = &cat.sub_categories {
@@ -71,17 +71,18 @@ pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<Cat
     // Sort in descending order of priority
     cats.sort_by_key(|c| Reverse(c.priority));
 
-    let scanned_categories: Vec<CategorisedFlashScan> = cats
+    let scanned_categories: Vec<CategorisedNode> = cats
         .into_iter()
         .map(|cat| build_category(cat, node_map))
         .collect();
 
-    let mut cat_map: HashMap<String, &CategorisedFlashScan> = HashMap::new();
+    let mut cat_map: HashMap<String, CategorisedNode> = HashMap::new();
     for category in scanned_categories.iter() {
-        cat_map.insert(category.category_id.clone(), category);
+        let category_id = category.lock().unwrap().category_id.clone();
+        cat_map.insert(category_id, category.clone());
     }
 
-    let mut result: Vec<CategorisedFlashScan> = Vec::new();
+    let mut result: Vec<CategorisedNode> = Vec::new();
     for category in FLASH_SCAN_CATEGORIES.iter() {
         if !cat_map.contains_key(&category.id) {
             continue;
@@ -96,16 +97,15 @@ pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<Cat
 
 fn build_category_tree(
     category: &FlashScanCategory,
-    cat_map: &HashMap<String, &CategorisedFlashScan>,
-) -> CategorisedFlashScan {
-    // check existence is done by caller
-    let mut cloned_category = cat_map
+    cat_map: &HashMap<String, CategorisedNode>,
+) -> CategorisedNode {
+    let cloned_category = cat_map
         .get(&category.id)
-        .map(|existing| (**existing).clone())
-        .unwrap();
+        .cloned()
+        .unwrap_or_else(|| CategorisedFlashScan::new_from(category.id.clone(), Vec::new(), None));
 
     if let Some(sub_categories) = &category.sub_categories {
-        let mut sub_results: Vec<CategorisedFlashScan> = Vec::new();
+        let mut sub_results: Vec<CategorisedNode> = Vec::new();
         for sub_category in sub_categories.iter() {
             if !cat_map.contains_key(&sub_category.id) {
                 continue;
@@ -116,7 +116,7 @@ fn build_category_tree(
         }
 
         if !sub_results.is_empty() {
-            cloned_category.sub_categories = Some(sub_results);
+            cloned_category.lock().unwrap().sub_categories = Some(sub_results);
         }
     }
 
@@ -126,7 +126,7 @@ fn build_category_tree(
 fn build_category(
     category: &FlashScanCategory,
     node_map: &mut HashMap<String, Node>,
-) -> CategorisedFlashScan {
+) -> CategorisedNode {
     let mut nodes: Vec<Node> = Vec::new();
     let regex_set = category.regexp.as_ref();
     let mut node_paths: Vec<String> = node_map.keys().cloned().collect();
@@ -147,11 +147,7 @@ fn build_category(
         }
     }
 
-    CategorisedFlashScan {
-        category_id: category.id.clone(),
-        nodes,
-        sub_categories: None,
-    }
+    CategorisedFlashScan::new_from(category.id.clone(), nodes, None)
 }
 
 fn drain_subtree_into(root: Node, bucket: &mut Vec<Node>, node_map: &mut HashMap<String, Node>) {
