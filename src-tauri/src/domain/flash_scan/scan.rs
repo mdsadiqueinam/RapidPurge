@@ -55,46 +55,56 @@ pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<Cat
     // Sort in descending order of priority
     cats.sort_by_key(|c| Reverse(c.priority));
 
-    let scanned_categories = cats
+    let scanned_categories: Vec<CategorisedFlashScan> = cats
         .into_iter()
         .map(|cat| build_category(cat, node_map))
         .collect();
 
-    return scanned_categories;
-}
-
-fn build_category_tree(categorised: &Vec<CategorisedFlashScan>) -> Vec<CategorisedFlashScan> {
-    let mut result: Vec<CategorisedFlashScan> = Vec::new();
     let mut cat_map: HashMap<String, &CategorisedFlashScan> = HashMap::new();
-
-    for cat in categorised.iter() {
-        cat_map.insert(cat.category_id.clone(), &cat);
+    for category in scanned_categories.iter() {
+        cat_map.insert(category.category_id.clone(), category);
     }
 
-    for cat in FLASH_SCAN_CATEGORIES.iter() {
-        let category_id = &cat.id;
-        let scanned_cat = match cat_map.get(category_id) {
-            Some(c) => (*c).clone(),
-            None => continue,
-        };
-
-        result.push(scanned_cat);
-
-        if let Some(sub_cats) = &cat.sub_categories {
-            let mut scanned_sub_cats: Vec<CategorisedFlashScan> = Vec::new();
-            for sub_cat in sub_cats.iter() {
-                if let Some(scanned_sub_cat) = cat_map.get(&sub_cat.id) {
-                    scanned_sub_cats.push((*scanned_sub_cat).clone());
-                }
-            }
-
-            if let Some(last) = result.last_mut() {
-                last.sub_categories = Some(scanned_sub_cats);
-            }
+    let mut result: Vec<CategorisedFlashScan> = Vec::new();
+    for category in FLASH_SCAN_CATEGORIES.iter() {
+        if !cat_map.contains_key(&category.id) {
+            continue;
         }
+
+        let tree = build_category_tree(category, &cat_map);
+        result.push(tree);
     }
 
     return result;
+}
+
+fn build_category_tree(
+    category: &FlashScanCategory,
+    cat_map: &HashMap<String, &CategorisedFlashScan>,
+) -> CategorisedFlashScan {
+    // check existence is done by caller
+    let mut cloned_category = cat_map
+        .get(&category.id)
+        .map(|existing| (**existing).clone())
+        .unwrap();
+
+    if let Some(sub_categories) = &category.sub_categories {
+        let mut sub_results: Vec<CategorisedFlashScan> = Vec::new();
+        for sub_category in sub_categories.iter() {
+            if !cat_map.contains_key(&sub_category.id) {
+                continue;
+            }
+
+            let sub_tree = build_category_tree(sub_category, cat_map);
+            sub_results.push(sub_tree);
+        }
+
+        if !sub_results.is_empty() {
+            cloned_category.sub_categories = Some(sub_results);
+        }
+    }
+
+    cloned_category
 }
 
 fn build_category(
