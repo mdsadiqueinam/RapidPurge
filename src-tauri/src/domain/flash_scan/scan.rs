@@ -1,6 +1,8 @@
+use std::cmp::Reverse;
 use std::collections::HashMap;
 
 use crate::domain::flash_scan::path::FLASH_SCAN_CATEGORIES;
+use crate::domain::models::flash_scan::FlashScanCategory;
 use crate::domain::models::path::Node;
 use crate::domain::walker::walk_and_build_tree;
 
@@ -36,13 +38,26 @@ where
 pub struct CategorisedFlashScan {
     pub category_id: String,
     pub nodes: Vec<Node>,
-    pub sub_categories: Vec<CategorisedFlashScan>,
+    pub sub_categories: Option<Vec<CategorisedFlashScan>>,
 }
 
 pub fn categorise_scanned_paths(node_map: &HashMap<String, Node>) -> Vec<CategorisedFlashScan> {
-    FLASH_SCAN_CATEGORIES
+    let mut cats: Vec<FlashScanCategory> = FLASH_SCAN_CATEGORIES
         .iter()
-        .map(|cat| build_category(cat, node_map))
+        .flat_map(|cat| {
+            cat.sub_categories
+                .as_ref()
+                .cloned()
+                .unwrap_or_else(|| vec![cat.clone()])
+                .into_iter()
+        })
+        .collect();
+
+    // Sort in descending order of priority
+    cats.sort_by_key(|c| Reverse(c.priority));
+
+    cats.into_iter()
+        .map(|cat| build_category(&cat, node_map))
         .collect()
 }
 
@@ -52,9 +67,16 @@ fn build_category(
 ) -> CategorisedFlashScan {
     let mut nodes: Vec<Node> = Vec::new();
     let regex_set = category.regexp.as_ref();
+    let mut node_paths: Vec<&String> = node_map.keys().collect();
+    node_paths.sort();
 
     // Single pass over all nodes: match by prefix (paths) and regex (if any)
-    for (node_path, node) in node_map.iter() {
+    for node_path in node_paths.iter() {
+        let node_opt = node_map.get(*node_path);
+        if node_opt.is_none() {
+            continue;
+        }
+        let node = node_opt.unwrap();
         let mut matched = false;
 
         // path prefix check
@@ -79,20 +101,27 @@ fn build_category(
         }
     }
 
-    let sub_categories = category
-        .sub_categories
-        .as_ref()
-        .map(|subs| {
-            subs.iter()
-                .map(|sub| build_category(sub, node_map))
-                .filter(|c| !c.nodes.is_empty() || !c.sub_categories.is_empty())
-                .collect()
-        })
-        .unwrap_or_default();
-
     CategorisedFlashScan {
         category_id: category.id.clone(),
         nodes,
-        sub_categories,
+        sub_categories: None,
     }
+}
+
+fn push_node_and_children(
+    node: &Node,
+    nodes: &mut Vec<Node>,
+    node_map: &mut HashMap<String, Node>,
+) {
+    nodes.push(node.clone());
+    remove_node(node, node_map);
+    let node_info = node.lock().unwrap();
+    for child in &node_info.children {
+        push_node_and_children(child, nodes, node_map);
+    }
+}
+
+fn remove_node(node: &Node, node_map: &mut HashMap<String, Node>) {
+    let key = node.lock().unwrap().path.clone();
+    node_map.remove(&key);
 }
