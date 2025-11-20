@@ -24,6 +24,17 @@ where
         .await;
     }
 
+    // Clear file children from all nodes to keep only folders
+    node_map
+        .values()
+        .for_each(|n| n.lock().unwrap().clear_file_children());
+
+    // remove file nodes from the map
+    node_map.retain(|_, node| {
+        let info = node.lock().unwrap();
+        !info.is_file
+    });
+
     let categorised = categorise_scanned_paths(&mut node_map);
 
     (total_junk_bytes as u64, categorised)

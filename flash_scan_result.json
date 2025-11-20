@@ -1,0 +1,50 @@
+{
+  "junkFound": 16838791168,
+  "nodes": [
+    {
+      "categoryId": "USER_CACHE",
+
+      "size": 11165884416
+    },
+    {
+      "categoryId": "SYSTEM_CACHE",
+
+      "size": 2980241408
+    },
+    {
+      "categoryId": "BROWSER_CACHE",
+
+      "size": 4045750272
+    },
+    {
+      "categoryId": "LOG_FILES",
+
+      "size": 399798272
+    },
+    {
+      "categoryId": "USER_LOG_FILES",
+
+      "size": 57626624
+    },
+    {
+      "categoryId": "TEMP_FILES",
+
+      "size": 2147721216
+    },
+    {
+      "categoryId": "DOWNLOADS",
+
+      "size": 78327808
+    },
+    {
+      "categoryId": "TRASH",
+
+      "size": 0
+    },
+    {
+      "categoryId": "LAUNCH_AGENTS_DAEMONS",
+
+      "size": 45056
+    }
+  ]
+}

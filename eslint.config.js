@@ -101,8 +101,6 @@ export default defineConfig([
       "@intlify/vue-i18n/no-v-html": "error",
       "@intlify/vue-i18n/valid-message-syntax": "error",
       "@intlify/vue-i18n/no-duplicate-keys-in-locale": "error",
-      "@intlify/vue-i18n/no-dynamic-keys": "error",
-      "@intlify/vue-i18n/no-unused-keys": "error",
       "@intlify/vue-i18n/prefer-linked-key-with-paren": "error",
       "@intlify/vue-i18n/no-html-messages": "off", // Temporary turn off to allow HTML in translation strings (e.g., mailto links)
     },

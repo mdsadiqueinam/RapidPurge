@@ -43,11 +43,14 @@ pub struct CategorisedScan {
 
 impl CategorisedScan {
     fn new_from(category_id: String, nodes: CategoryContents) -> CategorisedNode {
-        Arc::new(Mutex::new(Self {
+        let mut node = Self {
             category_id,
             nodes,
             size: 0,
-        }))
+        };
+        node.calculate_size();
+
+        Arc::new(Mutex::new(node))
     }
 
     fn new_node(category_id: String, nodes: Vec<Node>) -> CategorisedNode {
@@ -59,6 +62,17 @@ impl CategorisedScan {
         sub_categories: Vec<CategorisedNode>,
     ) -> CategorisedNode {
         CategorisedScan::new_from(category_id, CategoryContents::SubCategories(sub_categories))
+    }
+
+    fn calculate_size(&mut self) -> u128 {
+        let total_size: u128 = match &self.nodes {
+            CategoryContents::Nodes(nodes) => nodes.iter().map(|n| n.lock().unwrap().size).sum(),
+            CategoryContents::SubCategories(children) => {
+                children.iter().map(|c| c.lock().unwrap().size).sum()
+            }
+        };
+        self.size = total_size;
+        total_size
     }
 }
 
@@ -131,6 +145,11 @@ fn build_category(
     node_paths.sort();
 
     for node_path in node_paths {
+        let is_existing = node_map.contains_key(&node_path);
+        if !is_existing {
+            continue;
+        }
+
         let matches_prefix = category
             .paths
             .iter()
@@ -140,7 +159,10 @@ fn build_category(
 
         if matches_prefix || matches_regex {
             if let Some(root) = node_map.remove(&node_path) {
-                drain_subtree_into(root, &mut nodes, node_map);
+                // keep only the top level node
+                nodes.push(root.clone());
+                // remove all its tree & subtree from the map
+                drain_subtree_into(root, node_map);
             }
         }
     }
@@ -162,17 +184,13 @@ fn category_has_content(node: &CategorisedNode) -> bool {
         .any(|child| category_has_content(&child))
 }
 
-fn drain_subtree_into(root: Node, bucket: &mut Vec<Node>, node_map: &mut HashMap<String, Node>) {
+fn drain_subtree_into(root: Node, node_map: &mut HashMap<String, Node>) {
     let mut stack = vec![root];
     while let Some(node) = stack.pop() {
-        let (path, children, is_file) = {
+        let (path, children) = {
             let info = node.lock().unwrap();
-            (info.path.clone(), info.children.clone(), info.is_file)
+            (info.path.clone(), info.children.clone())
         };
-
-        if is_file == false {
-            bucket.push(node.clone());
-        }
 
         unlink_node_path(&path, node_map);
 

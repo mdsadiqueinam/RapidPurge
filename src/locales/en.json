@@ -13,5 +13,14 @@
   "Total Junk Found": "Total Junk Found",
   "Scan Again": "Scan Again",
   "Clean Now": "Clean Now",
-  "Scanning": "Scanning"
+  "Scanning": "Scanning",
+  "USER_CACHE": "User Cache Files",
+  "SYSTEM_CACHE": "System Cache Files",
+  "BROWSER_CACHE": "Browser Cache Files",
+  "LOG_FILES": "Log Files",
+  "USER_LOG_FILES": "User Log Files",
+  "TEMP_FILES": "Temporary Files",
+  "DOWNLOADS": "Downloads",
+  "TRASH": "Trash",
+  "LAUNCH_AGENTS_DAEMONS": "Launch Agents & Daemons"
 }

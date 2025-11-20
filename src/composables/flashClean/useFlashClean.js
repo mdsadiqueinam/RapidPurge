@@ -39,6 +39,7 @@ function FlashCleanState() {
     startScan,
     currentPathStr,
     junkFound,
+    scanData,
     scanState,
     resetState,
   };

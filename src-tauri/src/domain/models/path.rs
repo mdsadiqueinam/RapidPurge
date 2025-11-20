@@ -46,4 +46,11 @@ impl PathInfo {
         self.size = total_size;
         total_size
     }
+
+    pub fn clear_file_children(&mut self) {
+        self.children.retain(|child| {
+            let child_info = child.lock().unwrap();
+            !child_info.is_file
+        });
+    }
 }
