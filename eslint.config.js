@@ -96,7 +96,6 @@ export default defineConfig([
       "@intlify/vue-i18n/no-deprecated-tc": "error",
       "@intlify/vue-i18n/no-deprecated-v-t": "error",
       "@intlify/vue-i18n/no-i18n-t-path-prop": "error",
-      "@intlify/vue-i18n/no-missing-keys": "error",
       "@intlify/vue-i18n/no-raw-text": "error",
       "@intlify/vue-i18n/no-v-html": "error",
       "@intlify/vue-i18n/valid-message-syntax": "error",

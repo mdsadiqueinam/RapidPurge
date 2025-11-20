@@ -20,6 +20,27 @@ function FlashCleanState() {
       if (msg.event === "progress") {
         currentPathStr.value = msg.data.currentPathStr;
         junkFound.value = formatBytes(msg.data.junkFound);
+      } else {
+        const jsonData = { ...msg.data };
+        jsonData.nodes.forEach((node) => {
+          node.nodes.data = node.nodes.data.map((item) => {
+            return {
+              ...item,
+              children: undefined,
+            };
+          });
+        });
+        // download the scanData as json file
+        const dataStr = JSON.stringify(jsonData, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "flash_scan_result.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
       }
     };
 

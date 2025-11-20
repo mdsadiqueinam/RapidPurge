@@ -1,7 +1,7 @@
 <script setup>
 const router = useRouter();
 
-router.replace("/FlashClean");
+router.replace("/flash-clean");
 </script>
 
 <template>

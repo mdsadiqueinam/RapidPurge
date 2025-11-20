@@ -30,11 +30,11 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/FlashClean': RouteRecordInfo<
-      '/FlashClean',
-      '/FlashClean',
-      Record<never, never>,
-      Record<never, never>,
+    '/flash-clean/[[id]]': RouteRecordInfo<
+      '/flash-clean/[[id]]',
+      '/flash-clean/:id?',
+      { id?: ParamValueZeroOrOne<true> },
+      { id?: ParamValueZeroOrOne<false> },
       | never
     >,
   }
@@ -56,9 +56,9 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/FlashClean.vue': {
+    'src/pages/flash-clean/[[id]].vue': {
       routes:
-        | '/FlashClean'
+        | '/flash-clean/[[id]]'
       views:
         | never
     }

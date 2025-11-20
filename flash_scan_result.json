@@ -1,49 +1,272 @@
 {
-  "junkFound": 16838791168,
+  "junkFound": 16244006912,
   "nodes": [
     {
       "categoryId": "USER_CACHE",
-
-      "size": 11165884416
+      "nodes": {
+        "event": "nodes",
+        "data": [
+          {
+            "name": "Caches",
+            "path": "/Users/yasinquraishy/Library/Caches",
+            "size": 10532597760,
+            "isFile": false
+          }
+        ]
+      },
+      "size": 10532597760
     },
     {
       "categoryId": "SYSTEM_CACHE",
-
-      "size": 2980241408
+      "nodes": {
+        "event": "nodes",
+        "data": [
+          {
+            "name": "Caches",
+            "path": "/System/Library/Caches",
+            "size": 172032,
+            "isFile": false
+          },
+          {
+            "name": "folders",
+            "path": "/private/var/folders",
+            "size": 1512615936,
+            "isFile": false
+          },
+          {
+            "name": "folders",
+            "path": "/var/folders",
+            "size": 1512615936,
+            "isFile": false
+          }
+        ]
+      },
+      "size": 3025403904
     },
     {
       "categoryId": "BROWSER_CACHE",
-
-      "size": 4045750272
+      "nodes": {
+        "event": "subCategories",
+        "data": [
+          {
+            "categoryId": "SAFARI",
+            "nodes": {
+              "event": "nodes",
+              "data": [
+                {
+                  "name": "com.apple.Safari",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/C/com.apple.Safari",
+                  "size": 1261568
+                },
+                {
+                  "name": "com.apple.Safari.SafeBrowsing",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/C/com.apple.Safari.SafeBrowsing",
+                  "size": 19849216
+                },
+                {
+                  "name": "com.apple.Safari.SandboxBroker",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/C/com.apple.Safari.SandboxBroker",
+                  "size": 0
+                },
+                {
+                  "name": "com.apple.SafariPlatformSupport.Helper",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/C/com.apple.SafariPlatformSupport.Helper",
+                  "size": 0
+                },
+                {
+                  "name": "com.apple.SafariLaunchAgent",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/T/com.apple.SafariLaunchAgent",
+                  "size": 0,
+                  "children": [],
+                  "isFile": false
+                }
+              ]
+            },
+            "size": 21110784
+          },
+          {
+            "categoryId": "CHROME",
+            "nodes": {
+              "event": "nodes",
+              "data": [
+                {
+                  "name": "Chrome",
+                  "path": "/Users/yasinquraishy/Library/Caches/Google/Chrome",
+                  "size": 2715459584
+                },
+                {
+                  "name": "com.google.Chrome",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/C/com.google.Chrome",
+                  "size": 2101248
+                },
+                {
+                  "name": "com.google.Chrome.helper",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/C/com.google.Chrome.helper",
+                  "size": 13115392
+                },
+                {
+                  "name": "com.google.Chrome.code_sign_clone",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/X/com.google.Chrome.code_sign_clone",
+                  "size": 1329446912
+                }
+              ]
+            },
+            "size": 4060123136
+          },
+          {
+            "categoryId": "BRAVE",
+            "nodes": {
+              "event": "nodes",
+              "data": [
+                {
+                  "name": "com.brave.Browser",
+                  "path": "/private/var/folders/dz/t57qthxd6mn2qz7yw14gypxh0000gn/C/com.brave.Browser",
+                  "size": 1032192
+                }
+              ]
+            },
+            "size": 1032192
+          }
+        ]
+      },
+      "size": 4082266112
     },
     {
       "categoryId": "LOG_FILES",
-
-      "size": 399798272
+      "nodes": {
+        "event": "nodes",
+        "data": [
+          {
+            "name": "Logs",
+            "path": "/Library/Logs",
+            "size": 191090688,
+            "isFile": false
+          },
+          {
+            "name": "log",
+            "path": "/private/var/log",
+            "size": 101023744,
+            "isFile": false
+          },
+          {
+            "name": "log",
+            "path": "/var/log",
+            "size": 101023744,
+            "isFile": false
+          }
+        ]
+      },
+      "size": 393138176
     },
     {
       "categoryId": "USER_LOG_FILES",
-
+      "nodes": {
+        "event": "nodes",
+        "data": [
+          {
+            "name": "Logs",
+            "path": "/Users/yasinquraishy/Library/Logs",
+            "size": 57626624,
+            "isFile": false
+          }
+        ]
+      },
       "size": 57626624
     },
     {
       "categoryId": "TEMP_FILES",
-
+      "nodes": {
+        "event": "nodes",
+        "data": [
+          {
+            "name": "tmp",
+            "path": "/private/tmp",
+            "size": 0,
+            "isFile": false
+          },
+          {
+            "name": "tmp",
+            "path": "/private/var/tmp",
+            "size": 118784,
+            "isFile": false
+          },
+          {
+            "name": "vm",
+            "path": "/private/var/vm",
+            "size": 2147483648,
+            "isFile": false
+          },
+          {
+            "name": "tmp",
+            "path": "/tmp",
+            "size": 0,
+            "isFile": false
+          },
+          {
+            "name": "tmp",
+            "path": "/var/tmp",
+            "size": 118784,
+            "isFile": false
+          }
+        ]
+      },
       "size": 2147721216
     },
     {
       "categoryId": "DOWNLOADS",
-
+      "nodes": {
+        "event": "nodes",
+        "data": [
+          {
+            "name": "Downloads",
+            "path": "/Users/yasinquraishy/Downloads",
+            "size": 78327808,
+            "isFile": false
+          }
+        ]
+      },
       "size": 78327808
     },
     {
       "categoryId": "TRASH",
-
+      "nodes": {
+        "event": "nodes",
+        "data": [
+          {
+            "name": ".Trash",
+            "path": "/Users/yasinquraishy/.Trash",
+            "size": 0,
+            "isFile": false
+          }
+        ]
+      },
       "size": 0
     },
     {
       "categoryId": "LAUNCH_AGENTS_DAEMONS",
-
+      "nodes": {
+        "event": "nodes",
+        "data": [
+          {
+            "name": "LaunchAgents",
+            "path": "/Library/LaunchAgents",
+            "size": 8192,
+            "isFile": false
+          },
+          {
+            "name": "LaunchDaemons",
+            "path": "/Library/LaunchDaemons",
+            "size": 16384,
+            "isFile": false
+          },
+          {
+            "name": "LaunchAgents",
+            "path": "/Users/yasinquraishy/Library/LaunchAgents",
+            "size": 20480,
+            "isFile": false
+          }
+        ]
+      },
       "size": 45056
     }
   ]
