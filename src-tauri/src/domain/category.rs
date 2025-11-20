@@ -11,6 +11,7 @@ use crate::domain::models::path::Node;
 #[derive(Clone, Debug)]
 pub struct ScanCategory {
     pub id: String,
+    #[allow(unused)]
     pub name: String,
     pub priority: u32,
     pub paths: Vec<String>,
