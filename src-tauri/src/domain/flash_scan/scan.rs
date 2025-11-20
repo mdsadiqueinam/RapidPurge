@@ -41,63 +41,45 @@ pub struct CategorisedFlashScan {
     pub sub_categories: Option<Vec<CategorisedFlashScan>>,
 }
 
-pub fn categorise_scanned_paths(node_map: &HashMap<String, Node>) -> Vec<CategorisedFlashScan> {
-    let mut cats: Vec<FlashScanCategory> = FLASH_SCAN_CATEGORIES
-        .iter()
-        .flat_map(|cat| {
-            cat.sub_categories
-                .as_ref()
-                .cloned()
-                .unwrap_or_else(|| vec![cat.clone()])
-                .into_iter()
-        })
-        .collect();
+pub fn categorise_scanned_paths(node_map: &mut HashMap<String, Node>) -> Vec<CategorisedFlashScan> {
+    let mut cats: Vec<&FlashScanCategory> = Vec::new();
+    for cat in FLASH_SCAN_CATEGORIES.iter() {
+        if let Some(subs) = &cat.sub_categories {
+            cats.extend(subs.iter());
+        } else {
+            cats.push(cat);
+        }
+    }
 
     // Sort in descending order of priority
     cats.sort_by_key(|c| Reverse(c.priority));
 
     cats.into_iter()
-        .map(|cat| build_category(&cat, node_map))
+        .map(|cat| build_category(cat, node_map))
         .collect()
 }
 
 fn build_category(
-    category: &crate::domain::models::flash_scan::FlashScanCategory,
-    node_map: &HashMap<String, Node>,
+    category: &FlashScanCategory,
+    node_map: &mut HashMap<String, Node>,
 ) -> CategorisedFlashScan {
     let mut nodes: Vec<Node> = Vec::new();
     let regex_set = category.regexp.as_ref();
-    let mut node_paths: Vec<&String> = node_map.keys().collect();
+    let mut node_paths: Vec<String> = node_map.keys().cloned().collect();
     node_paths.sort();
 
-    // Single pass over all nodes: match by prefix (paths) and regex (if any)
-    for node_path in node_paths.iter() {
-        let node_opt = node_map.get(*node_path);
-        if node_opt.is_none() {
-            continue;
-        }
-        let node = node_opt.unwrap();
-        let mut matched = false;
+    for node_path in node_paths {
+        let matches_prefix = category
+            .paths
+            .iter()
+            .any(|prefix| node_path.starts_with(prefix));
+        let matches_regex =
+            !matches_prefix && regex_set.map(|re| re.is_match(&node_path)).unwrap_or(false);
 
-        // path prefix check
-        for prefix in &category.paths {
-            if node_path.starts_with(prefix) {
-                matched = true;
-                break;
+        if matches_prefix || matches_regex {
+            if let Some(root) = node_map.remove(&node_path) {
+                drain_subtree_into(root, &mut nodes, node_map);
             }
-        }
-
-        // regex check
-        if !matched {
-            if let Some(re) = regex_set {
-                if re.is_match(node_path) {
-                    matched = true;
-                }
-            }
-        }
-
-        if matched {
-            nodes.push(node.clone());
         }
     }
 
@@ -108,20 +90,22 @@ fn build_category(
     }
 }
 
-fn push_node_and_children(
-    node: &Node,
-    nodes: &mut Vec<Node>,
-    node_map: &mut HashMap<String, Node>,
-) {
-    nodes.push(node.clone());
-    remove_node(node, node_map);
-    let node_info = node.lock().unwrap();
-    for child in &node_info.children {
-        push_node_and_children(child, nodes, node_map);
+fn drain_subtree_into(root: Node, bucket: &mut Vec<Node>, node_map: &mut HashMap<String, Node>) {
+    let mut stack = vec![root];
+    while let Some(node) = stack.pop() {
+        let (path, children) = {
+            let info = node.lock().unwrap();
+            (info.path.clone(), info.children.clone())
+        };
+
+        bucket.push(node.clone());
+        unlink_node_path(&path, node_map);
+
+        // Preserve child order by pushing them in reverse for the DFS stack.
+        stack.extend(children.into_iter().rev());
     }
 }
 
-fn remove_node(node: &Node, node_map: &mut HashMap<String, Node>) {
-    let key = node.lock().unwrap().path.clone();
-    node_map.remove(&key);
+fn unlink_node_path(path: &str, node_map: &mut HashMap<String, Node>) {
+    node_map.remove(path);
 }
