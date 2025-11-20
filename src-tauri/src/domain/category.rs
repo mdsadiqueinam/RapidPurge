@@ -38,11 +38,16 @@ pub enum CategoryContents {
 pub struct CategorisedScan {
     pub category_id: String,
     pub nodes: CategoryContents,
+    pub size: u128,
 }
 
 impl CategorisedScan {
     fn new_from(category_id: String, nodes: CategoryContents) -> CategorisedNode {
-        Arc::new(Mutex::new(Self { category_id, nodes }))
+        Arc::new(Mutex::new(Self {
+            category_id,
+            nodes,
+            size: 0,
+        }))
     }
 
     fn new_node(category_id: String, nodes: Vec<Node>) -> CategorisedNode {
@@ -160,12 +165,15 @@ fn category_has_content(node: &CategorisedNode) -> bool {
 fn drain_subtree_into(root: Node, bucket: &mut Vec<Node>, node_map: &mut HashMap<String, Node>) {
     let mut stack = vec![root];
     while let Some(node) = stack.pop() {
-        let (path, children) = {
+        let (path, children, is_file) = {
             let info = node.lock().unwrap();
-            (info.path.clone(), info.children.clone())
+            (info.path.clone(), info.children.clone(), info.is_file)
         };
 
-        bucket.push(node.clone());
+        if is_file == false {
+            bucket.push(node.clone());
+        }
+
         unlink_node_path(&path, node_map);
 
         // Preserve child order by pushing them in reverse for the DFS stack.
